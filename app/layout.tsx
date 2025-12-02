@@ -1,3 +1,4 @@
+import AppLayout from '@/components/layout/AppLayout';
 import type { Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
 import './globals.css';
@@ -18,7 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${quicksand.className} antialiased`}>{children}</body>
+      <body
+        className={`${quicksand.className} antialiased bg-background text-foreground`}
+      >
+        <AppLayout>{children}</AppLayout>
+      </body>
     </html>
   );
 }
