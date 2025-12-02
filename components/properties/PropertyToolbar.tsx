@@ -26,7 +26,7 @@ export function PropertyToolbar() {
       params.delete('query');
     }
     router.replace(`?${params.toString()}`);
-  }, 300);
+  }, 500);
 
   const handleFilterChange = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams);
