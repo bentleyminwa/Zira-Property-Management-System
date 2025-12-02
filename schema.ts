@@ -91,7 +91,7 @@ model Property {
   bedrooms    Int?
   bathrooms   Int?
   features    String[] // Array of strings for features like "Pool", "Gym"
-  image      String?
+  images      String[] // Array of image URLs
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
 
