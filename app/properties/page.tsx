@@ -1,28 +1,75 @@
+import { PropertyCard } from '@/components/properties/PropertyCard';
+import { PropertyToolbar } from '@/components/properties/PropertyToolbar';
 import prisma from '@/lib/prisma';
-import type { Property } from '@prisma/client';
+import { Prisma, PropertyStatus, PropertyType } from '@prisma/client';
 
-export default async function Properties() {
-  const properties: Property[] = await prisma.property.findMany();
+interface PropertiesProps {
+  searchParams: Promise<{
+    query?: string;
+    status?: string;
+    type?: string;
+    sort?: string;
+  }>;
+}
+
+export default async function Properties({ searchParams }: PropertiesProps) {
+  const params = await searchParams;
+  const query = params.query;
+  const status = params.status;
+  const type = params.type;
+  const sort = params.sort;
+
+  // Build where clause
+  const where: Prisma.PropertyWhereInput = {
+    AND: [
+      query
+        ? {
+            OR: [
+              { name: { contains: query, mode: 'insensitive' } },
+              { address: { contains: query, mode: 'insensitive' } },
+            ],
+          }
+        : {},
+      status && status !== 'ALL' ? { status: status as PropertyStatus } : {},
+      type && type !== 'ALL' ? { type: type as PropertyType } : {},
+    ],
+  };
+
+  // Build orderBy clause
+  let orderBy: Prisma.PropertyOrderByWithRelationInput = { createdAt: 'desc' };
+  if (sort === 'price_asc') orderBy = { price: 'asc' };
+  if (sort === 'price_desc') orderBy = { price: 'desc' };
+
+  const properties = await prisma.property.findMany({
+    where,
+    orderBy,
+  });
 
   return (
-    <div>
-      <h1>Properties</h1>
+    <div className='p-6 space-y-6'>
+      <div className='flex flex-col gap-2'>
+        <h1 className='text-3xl font-bold tracking-tight'>Properties</h1>
+        <p className='text-muted-foreground'>
+          Manage your real estate assets, view details, and track status.
+        </p>
+      </div>
 
-      <ul>
-        {properties.map((property) => (
-          <li key={property.id}>
-            <span>{property.name}</span>
-            {property.image && (
-              <img
-                src={property.image}
-                alt={property.name}
-                width={100}
-                height={100}
-              />
-            )}
-          </li>
-        ))}
-      </ul>
+      <PropertyToolbar />
+
+      {properties.length === 0 ? (
+        <div className='flex flex-col items-center justify-center py-12 text-center border rounded-lg bg-muted/10'>
+          <h3 className='mt-4 text-lg font-semibold'>No properties found</h3>
+          <p className='text-muted-foreground'>
+            Try adjusting your search or filters.
+          </p>
+        </div>
+      ) : (
+        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+          {properties.map((property) => (
+            <PropertyCard key={property.id} property={property} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
