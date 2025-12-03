@@ -1,5 +1,7 @@
+import { AddPropertyModal } from '@/components/properties/AddPropertyModal';
 import { PropertyCard } from '@/components/properties/PropertyCard';
-import { PropertyToolbar } from '@/components/properties/PropertyToolbar';
+import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
+import { PageHeader } from '@/components/ui/PageHeader';
 import prisma from '@/lib/prisma';
 import { Prisma, PropertyStatus, PropertyType } from '@prisma/client';
 
@@ -45,16 +47,48 @@ export default async function Properties({ searchParams }: PropertiesProps) {
     orderBy,
   });
 
+  const filterOptions = [
+    {
+      key: 'status',
+      label: 'Status',
+      options: [
+        { label: 'Available', value: 'AVAILABLE' },
+        { label: 'Rented', value: 'RENTED' },
+        { label: 'Maintenance', value: 'MAINTENANCE' },
+      ],
+    },
+    {
+      key: 'type',
+      label: 'Type',
+      options: [
+        { label: 'Apartment', value: 'APARTMENT' },
+        { label: 'House', value: 'HOUSE' },
+        { label: 'Commercial', value: 'COMMERCIAL' },
+        { label: 'Condo', value: 'CONDO' },
+      ],
+    },
+  ];
+
+  const sortOptions = [
+    { label: 'Newest', value: 'newest' },
+    { label: 'Price: Low to High', value: 'price_asc' },
+    { label: 'Price: High to Low', value: 'price_desc' },
+  ];
+
   return (
     <div className='p-6 space-y-6'>
-      <div className='flex flex-col gap-2'>
-        <h1 className='text-3xl font-bold tracking-tight'>Properties</h1>
-        <p className='text-muted-foreground'>
-          Manage your real estate assets, view details, and track status.
-        </p>
-      </div>
+      <PageHeader
+        title='Properties'
+        description='Manage your real estate assets, view details, and track status.'
+      />
 
-      <PropertyToolbar />
+      <DataTableToolbar
+        searchPlaceholder='Search properties...'
+        filterOptions={filterOptions}
+        sortOptions={sortOptions}
+      >
+        <AddPropertyModal />
+      </DataTableToolbar>
 
       {properties.length === 0 ? (
         <div className='flex flex-col items-center justify-center py-12 text-center border rounded-lg bg-muted/10'>

@@ -1,5 +1,6 @@
 import { BookingTable } from '@/components/bookings/BookingTable';
-import { BookingToolbar } from '@/components/bookings/BookingToolbar';
+import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
+import { PageHeader } from '@/components/ui/PageHeader';
 import prisma from '@/lib/prisma';
 import { BookingStatus, Prisma } from '@prisma/client';
 
@@ -58,16 +59,37 @@ export default async function Bookings({ searchParams }: BookingsProps) {
     },
   });
 
+  const filterOptions = [
+    {
+      key: 'status',
+      label: 'Status',
+      options: [
+        { label: 'Pending', value: 'PENDING' },
+        { label: 'Confirmed', value: 'CONFIRMED' },
+        { label: 'Cancelled', value: 'CANCELLED' },
+        { label: 'Completed', value: 'COMPLETED' },
+      ],
+    },
+  ];
+
+  const sortOptions = [
+    { label: 'Newest', value: 'newest' },
+    { label: 'Price: Low to High', value: 'price_asc' },
+    { label: 'Price: High to Low', value: 'price_desc' },
+  ];
+
   return (
     <div className='p-6 space-y-6'>
-      <div className='flex flex-col gap-2'>
-        <h1 className='text-3xl font-bold tracking-tight'>Bookings</h1>
-        <p className='text-muted-foreground'>
-          Manage bookings, view details, and track status.
-        </p>
-      </div>
+      <PageHeader
+        title='Bookings'
+        description='Manage bookings, view details, and track status.'
+      />
 
-      <BookingToolbar />
+      <DataTableToolbar
+        searchPlaceholder='Search bookings...'
+        filterOptions={filterOptions}
+        sortOptions={sortOptions}
+      />
 
       <BookingTable bookings={bookings} />
     </div>
