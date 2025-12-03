@@ -1,31 +1,11 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import {
-  Building2,
-  CalendarDays,
-  ChevronLeft,
-  ChevronRight,
-  CreditCard,
-  LayoutDashboard,
-  Menu,
-  Settings,
-  Users,
-  Wrench,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, Users } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
 
-const sidebarItems = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { name: 'Properties', href: '/properties', icon: Building2 },
-  { name: 'Bookings', href: '/bookings', icon: CalendarDays },
-  { name: 'Tenants', href: '/tenants', icon: Users },
-  { name: 'Maintenance', href: '/maintenance', icon: Wrench },
-  { name: 'Payments', href: '/payments', icon: CreditCard },
-  { name: 'Settings', href: '/settings', icon: Settings },
-];
+import { sidebarItems } from '@/lib/site-config';
 
 interface SidebarProps {
   isCollapsed: boolean;
