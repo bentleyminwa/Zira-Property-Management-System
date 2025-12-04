@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { ThemeCard } from './ThemeCard';
 
 const appearanceFormSchema = z.object({
   theme: z.enum(['light', 'dark']),
@@ -49,62 +50,29 @@ export function AppearanceForm() {
               Theme
             </label>
             <div className='grid max-w-md grid-cols-2 gap-8 pt-2'>
-              {/* Custom Radio Cards */}
-              <label className='cursor-pointer'>
-                <input
-                  type='radio'
-                  value='light'
-                  className='peer sr-only'
-                  {...form.register('theme')}
-                />
-                <div className='items-center rounded-md border-2 border-muted p-1 hover:border-accent peer-checked:border-primary'>
-                  <div className='space-y-2 rounded-sm bg-[#ecedef] p-2'>
-                    <div className='space-y-2 rounded-md bg-white p-2 shadow-sm'>
-                      <div className='h-2 w-[80px] rounded-lg bg-[#ecedef]' />
-                      <div className='h-2 w-[100px] rounded-lg bg-[#ecedef]' />
-                    </div>
-                    <div className='flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm'>
-                      <div className='h-4 w-4 rounded-full bg-[#ecedef]' />
-                      <div className='h-2 w-[100px] rounded-lg bg-[#ecedef]' />
-                    </div>
-                    <div className='flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm'>
-                      <div className='h-4 w-4 rounded-full bg-[#ecedef]' />
-                      <div className='h-2 w-[100px] rounded-lg bg-[#ecedef]' />
-                    </div>
-                  </div>
-                </div>
-                <span className='block w-full p-2 text-center font-normal'>
-                  Light
-                </span>
-              </label>
-
-              <label className='cursor-pointer'>
-                <input
-                  type='radio'
-                  value='dark'
-                  className='peer sr-only'
-                  {...form.register('theme')}
-                />
-                <div className='items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground peer-checked:border-primary'>
-                  <div className='space-y-2 rounded-sm bg-slate-950 p-2'>
-                    <div className='space-y-2 rounded-md bg-slate-800 p-2 shadow-sm'>
-                      <div className='h-2 w-[80px] rounded-lg bg-slate-400' />
-                      <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
-                    </div>
-                    <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm'>
-                      <div className='h-4 w-4 rounded-full bg-slate-400' />
-                      <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
-                    </div>
-                    <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm'>
-                      <div className='h-4 w-4 rounded-full bg-slate-400' />
-                      <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
-                    </div>
-                  </div>
-                </div>
-                <span className='block w-full p-2 text-center font-normal'>
-                  Dark
-                </span>
-              </label>
+              <ThemeCard
+                value='light'
+                label='Light'
+                register={form.register('theme')}
+                colors={{
+                  container: '',
+                  background: 'bg-[#ecedef]',
+                  card: 'bg-white',
+                  accent: 'bg-[#ecedef]',
+                }}
+              />
+              <ThemeCard
+                value='dark'
+                label='Dark'
+                register={form.register('theme')}
+                colors={{
+                  container:
+                    'bg-popover hover:bg-accent hover:text-accent-foreground',
+                  background: 'bg-slate-950',
+                  card: 'bg-slate-800',
+                  accent: 'bg-slate-400',
+                }}
+              />
             </div>
             <p className='text-sm text-muted-foreground'>
               Select the theme for the dashboard.
