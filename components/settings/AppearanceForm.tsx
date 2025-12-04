@@ -1,5 +1,6 @@
 'use client';
 
+import { useTheme } from '@/components/theme-provider';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -18,13 +19,18 @@ const defaultValues: Partial<AppearanceFormValues> = {
 };
 
 export function AppearanceForm() {
+  const { theme, setTheme } = useTheme();
+
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      theme,
+    },
   });
 
   function onSubmit(data: AppearanceFormValues) {
-    alert(JSON.stringify(data, null, 2));
+    setTheme(data.theme);
   }
 
   return (

@@ -1,4 +1,5 @@
 import AppLayout from '@/components/layout/AppLayout';
+import { ThemeProvider } from '@/components/theme-provider';
 import type { Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
 import './globals.css';
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body
         className={`${quicksand.className} antialiased bg-background text-foreground`}
       >
-        <AppLayout>{children}</AppLayout>
+        <ThemeProvider defaultTheme='light' storageKey='zira-theme'>
+          <AppLayout>{children}</AppLayout>
+        </ThemeProvider>
       </body>
     </html>
   );
