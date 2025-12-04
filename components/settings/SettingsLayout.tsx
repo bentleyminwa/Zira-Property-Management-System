@@ -44,7 +44,7 @@ export function SettingsLayout({
       </div>
       <Separator className='my-6' />
       <div className='flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>
-        <aside className='-mx-4 lg:w-1/5'>
+        <aside className='-mx-4 lg:ml-0 lg:mr-4 lg:w-1/5'>
           <nav
             className={cn(
               'flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1'
