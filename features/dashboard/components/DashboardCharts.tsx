@@ -1,5 +1,5 @@
-import { PropertyStatusChart } from '@/components/dashboard/PropertyStatusChart';
-import { RevenueChart } from '@/components/dashboard/RevenueChart';
+import { PropertyStatusChart } from '@/features/dashboard/components/PropertyStatusChart';
+import { RevenueChart } from '@/features/dashboard/components/RevenueChart';
 import prisma from '@/lib/prisma';
 
 export async function DashboardCharts() {

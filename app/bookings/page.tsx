@@ -1,7 +1,7 @@
-import { BookingList } from '@/components/bookings/BookingList';
 import { TableSkeleton } from '@/components/skeletons';
 import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { BookingList } from '@/features/bookings/components/BookingList';
 import { Suspense } from 'react';
 
 interface BookingsProps {

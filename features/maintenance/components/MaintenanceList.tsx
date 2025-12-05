@@ -1,4 +1,4 @@
-import { MaintenanceTable } from '@/components/maintenance/MaintenanceTable';
+import { MaintenanceTable } from '@/features/maintenance/components/MaintenanceTable';
 import prisma from '@/lib/prisma';
 import { MaintenancePriority, MaintenanceStatus, Prisma } from '@prisma/client';
 

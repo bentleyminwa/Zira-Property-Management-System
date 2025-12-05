@@ -1,6 +1,5 @@
 'use client';
 
-import { createProperty } from '@/app/actions/properties';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,6 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { createProperty } from '../actions/properties';
 
 export function AddPropertyModal() {
   const [open, setOpen] = useState(false);

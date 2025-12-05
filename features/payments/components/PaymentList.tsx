@@ -1,4 +1,4 @@
-import { PaymentTable } from '@/components/payments/PaymentTable';
+import { PaymentTable } from '@/features/payments/components/PaymentTable';
 import prisma from '@/lib/prisma';
 import {
   PaymentMethod,

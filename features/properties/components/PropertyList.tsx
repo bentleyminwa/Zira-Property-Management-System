@@ -1,4 +1,4 @@
-import { PropertyCard } from '@/components/properties/PropertyCard';
+import { PropertyCard } from '@/features/properties/components/PropertyCard';
 import prisma from '@/lib/prisma';
 import { Prisma, PropertyStatus, PropertyType } from '@prisma/client';
 

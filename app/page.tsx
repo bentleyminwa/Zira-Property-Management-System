@@ -1,12 +1,12 @@
-import { DashboardCharts } from '@/components/dashboard/DashboardCharts';
-import { DashboardRecent } from '@/components/dashboard/DashboardRecent';
-import { DashboardStats } from '@/components/dashboard/DashboardStats';
 import {
   ChartSkeleton,
   KPISkeleton,
   RecentActivitySkeleton,
 } from '@/components/skeletons';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { DashboardCharts } from '@/features/dashboard/components/DashboardCharts';
+import { DashboardRecent } from '@/features/dashboard/components/DashboardRecent';
+import { DashboardStats } from '@/features/dashboard/components/DashboardStats';
 import { Suspense } from 'react';
 
 export default function Dashboard() {

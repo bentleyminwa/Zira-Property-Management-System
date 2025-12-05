@@ -1,7 +1,7 @@
 import { TableSkeleton } from '@/components/skeletons';
-import { TenantList } from '@/components/tenants/TenantList';
 import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { TenantList } from '@/features/tenants/components/TenantList';
 import { Suspense } from 'react';
 
 interface TenantsProps {

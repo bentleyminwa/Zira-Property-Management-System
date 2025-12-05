@@ -1,8 +1,8 @@
-import { PaymentList } from '@/components/payments/PaymentList';
-import { PaymentStats } from '@/components/payments/PaymentStats';
 import { KPISkeleton, TableSkeleton } from '@/components/skeletons';
 import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { PaymentList } from '@/features/payments/components/PaymentList';
+import { PaymentStats } from '@/features/payments/components/PaymentStats';
 import { Suspense } from 'react';
 
 interface PaymentsProps {

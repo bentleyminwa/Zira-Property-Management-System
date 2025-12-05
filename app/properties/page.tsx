@@ -1,8 +1,8 @@
-import { AddPropertyModal } from '@/components/properties/AddPropertyModal';
-import { PropertyList } from '@/components/properties/PropertyList';
 import { CardGridSkeleton } from '@/components/skeletons';
 import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { AddPropertyModal } from '@/features/properties/components/AddPropertyModal';
+import { PropertyList } from '@/features/properties/components/PropertyList';
 import { Suspense } from 'react';
 
 interface PropertiesProps {

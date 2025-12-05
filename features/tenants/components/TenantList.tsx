@@ -1,4 +1,4 @@
-import { TenantTable } from '@/components/tenants/TenantTable';
+import { TenantTable } from '@/features/tenants/components/TenantTable';
 import prisma from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 

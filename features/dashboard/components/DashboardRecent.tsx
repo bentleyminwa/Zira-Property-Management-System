@@ -1,5 +1,5 @@
-import { RecentBookings } from '@/components/dashboard/RecentBookings';
-import { RecentPayments } from '@/components/dashboard/RecentPayments';
+import { RecentBookings } from '@/features/dashboard/components/RecentBookings';
+import { RecentPayments } from '@/features/dashboard/components/RecentPayments';
 import prisma from '@/lib/prisma';
 
 export async function DashboardRecent() {

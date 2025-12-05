@@ -1,7 +1,7 @@
-import { MaintenanceList } from '@/components/maintenance/MaintenanceList';
 import { TableSkeleton } from '@/components/skeletons';
 import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { MaintenanceList } from '@/features/maintenance/components/MaintenanceList';
 import { Suspense } from 'react';
 
 interface MaintenanceProps {

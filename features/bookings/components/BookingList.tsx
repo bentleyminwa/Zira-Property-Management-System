@@ -1,4 +1,4 @@
-import { BookingTable } from '@/components/bookings/BookingTable';
+import { BookingTable } from '@/features/bookings/components/BookingTable';
 import prisma from '@/lib/prisma';
 import { BookingStatus, Prisma } from '@prisma/client';
 
