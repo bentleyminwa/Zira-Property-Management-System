@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatCurrency } from '@/lib/utils';
 import { Booking, Maintenance, Property } from '@prisma/client';
 import {
+  ArrowLeft,
   Bath,
   BedDouble,
   CalendarDays,
@@ -15,6 +18,7 @@ import {
   Trash2,
   Wrench,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 // import Image from 'next/image';
 
 interface PropertyDetailsProps {
@@ -25,8 +29,19 @@ interface PropertyDetailsProps {
 }
 
 export function PropertyDetails({ property }: PropertyDetailsProps) {
+  const router = useRouter();
+
   return (
     <div className='space-y-6'>
+      <Button
+        variant='ghost'
+        className='gap-2 pl-0 hover:bg-transparent hover:text-primary'
+        onClick={() => router.back()}
+      >
+        <ArrowLeft className='h-4 w-4' />
+        Back to Properties
+      </Button>
+
       {/* Header */}
       <div className='flex flex-col gap-4 md:flex-row md:items-start md:justify-between'>
         <div className='space-y-1'>

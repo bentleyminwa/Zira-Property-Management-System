@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/dialog';
 import { mockMessages, mockNotifications, mockUser } from '@/lib/mockData';
 import { Bell, Mail, User } from 'lucide-react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
@@ -41,7 +42,9 @@ export default function TopBar() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href='/'>Dashboard</BreadcrumbLink>
+            <BreadcrumbLink asChild>
+              <Link href='/'>Dashboard</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
           {breadcrumbItems.length > 0 && <BreadcrumbSeparator />}
           {breadcrumbItems.map((item, index) => (
@@ -50,7 +53,9 @@ export default function TopBar() {
                 {item.isLast ? (
                   <BreadcrumbPage>{item.title}</BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink href={item.href}>{item.title}</BreadcrumbLink>
+                  <BreadcrumbLink asChild>
+                    <Link href={item.href}>{item.title}</Link>
+                  </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
               {!item.isLast && <BreadcrumbSeparator />}
