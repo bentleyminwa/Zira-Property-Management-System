@@ -32,7 +32,7 @@ export function PropertyStatusChart({ data }: PropertyStatusChartProps) {
               cx='50%'
               cy='50%'
               innerRadius={60}
-              outerRadius={80}
+              outerRadius={100}
               paddingAngle={5}
               dataKey='value'
             >

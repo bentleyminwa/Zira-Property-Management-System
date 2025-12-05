@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useBreadcrumb } from '@/contexts/BreadcrumbContext';
 import { mockMessages, mockNotifications, mockUser } from '@/lib/mockData';
 import { Bell, Mail, User } from 'lucide-react';
 import Link from 'next/link';
@@ -26,12 +27,15 @@ import React from 'react';
 
 export default function TopBar() {
   const pathname = usePathname();
+  const { overrides } = useBreadcrumb();
   const pathSegments = pathname.split('/').filter((segment) => segment);
 
   const breadcrumbItems = pathSegments.map((segment, index) => {
     const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
     const isLast = index === pathSegments.length - 1;
-    const title = segment.charAt(0).toUpperCase() + segment.slice(1);
+    // Check if there's a custom override for this segment, otherwise capitalize it
+    const title =
+      overrides[segment] || segment.charAt(0).toUpperCase() + segment.slice(1);
 
     return { href, title, isLast };
   });

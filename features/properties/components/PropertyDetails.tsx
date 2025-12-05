@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useBreadcrumb } from '@/contexts/BreadcrumbContext';
 import { formatCurrency } from '@/lib/utils';
 import { Booking, Maintenance, Property } from '@prisma/client';
 import {
@@ -19,6 +20,7 @@ import {
   Wrench,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 // import Image from 'next/image';
 
 interface PropertyDetailsProps {
@@ -30,6 +32,22 @@ interface PropertyDetailsProps {
 
 export function PropertyDetails({ property }: PropertyDetailsProps) {
   const router = useRouter();
+  const { setBreadcrumbOverride, clearBreadcrumbOverride } = useBreadcrumb();
+
+  // Set breadcrumb override when component mounts
+  useEffect(() => {
+    setBreadcrumbOverride(property.id, property.name);
+
+    // Clean up when component unmounts
+    return () => {
+      clearBreadcrumbOverride(property.id);
+    };
+  }, [
+    property.id,
+    property.name,
+    setBreadcrumbOverride,
+    clearBreadcrumbOverride,
+  ]);
 
   return (
     <div className='space-y-6'>
