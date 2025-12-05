@@ -1,16 +1,9 @@
-import { PaymentTable } from '@/components/payments/PaymentTable';
+import { PaymentList } from '@/components/payments/PaymentList';
+import { PaymentStats } from '@/components/payments/PaymentStats';
+import { KPISkeleton, TableSkeleton } from '@/components/skeletons';
 import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
-import { KPICard } from '@/components/ui/KPICard';
 import { PageHeader } from '@/components/ui/PageHeader';
-import prisma from '@/lib/prisma';
-import { formatCurrency } from '@/lib/utils';
-import {
-  PaymentMethod,
-  PaymentStatus,
-  PaymentType,
-  Prisma,
-} from '@prisma/client';
-import { Clock, DollarSign, TrendingUp, XCircle } from 'lucide-react';
+import { Suspense } from 'react';
 
 interface PaymentsProps {
   searchParams: Promise<{
@@ -29,73 +22,6 @@ export default async function Payments({ searchParams }: PaymentsProps) {
   const method = params.method;
   const type = params.type;
   const sort = params.sort;
-
-  // Build where clause
-  const where: Prisma.PaymentWhereInput = {
-    AND: [
-      query
-        ? {
-            OR: [
-              {
-                tenant: {
-                  OR: [
-                    { firstName: { contains: query, mode: 'insensitive' } },
-                    { lastName: { contains: query, mode: 'insensitive' } },
-                    { email: { contains: query, mode: 'insensitive' } },
-                  ],
-                },
-              },
-              {
-                reference: { contains: query, mode: 'insensitive' },
-              },
-            ],
-          }
-        : {},
-      status && status !== 'ALL' ? { status: status as PaymentStatus } : {},
-      method && method !== 'ALL' ? { method: method as PaymentMethod } : {},
-      type && type !== 'ALL' ? { type: type as PaymentType } : {},
-    ],
-  };
-
-  // Build orderBy clause
-  let orderBy: Prisma.PaymentOrderByWithRelationInput = { date: 'desc' };
-  if (sort === 'oldest') orderBy = { date: 'asc' };
-  if (sort === 'amount_asc') orderBy = { amount: 'asc' };
-  if (sort === 'amount_desc') orderBy = { amount: 'desc' };
-
-  const payments = await prisma.payment.findMany({
-    where,
-    orderBy,
-    include: {
-      booking: {
-        include: {
-          property: true,
-        },
-      },
-      tenant: true,
-    },
-  });
-
-  // Calculate KPIs
-  const allPayments = await prisma.payment.findMany();
-
-  const totalRevenue = allPayments
-    .filter((p) => p.status === 'COMPLETED')
-    .reduce((sum, p) => sum + Number(p.amount), 0);
-
-  const pendingPayments = allPayments
-    .filter((p) => p.status === 'PENDING')
-    .reduce((sum, p) => sum + Number(p.amount), 0);
-
-  const failedPaymentsCount = allPayments.filter(
-    (p) => p.status === 'FAILED'
-  ).length;
-
-  const completedCount = allPayments.filter(
-    (p) => p.status === 'COMPLETED'
-  ).length;
-  const totalCount = allPayments.length;
-  const successRate = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
   const filterOptions = [
     {
@@ -144,32 +70,9 @@ export default async function Payments({ searchParams }: PaymentsProps) {
       />
 
       {/* KPIs Grid */}
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
-        <KPICard
-          title='Total Revenue'
-          value={formatCurrency(totalRevenue)}
-          icon={DollarSign}
-          description='From completed payments'
-        />
-        <KPICard
-          title='Pending Payments'
-          value={formatCurrency(pendingPayments)}
-          icon={Clock}
-          description='Awaiting confirmation'
-        />
-        <KPICard
-          title='Failed Payments'
-          value={failedPaymentsCount}
-          icon={XCircle}
-          description='Unsuccessful transactions'
-        />
-        <KPICard
-          title='Success Rate'
-          value={`${successRate.toFixed(1)}%`}
-          icon={TrendingUp}
-          description={`${completedCount} of ${totalCount} payments`}
-        />
-      </div>
+      <Suspense fallback={<KPISkeleton />}>
+        <PaymentStats />
+      </Suspense>
 
       <DataTableToolbar
         searchPlaceholder='Search payments...'
@@ -177,7 +80,15 @@ export default async function Payments({ searchParams }: PaymentsProps) {
         sortOptions={sortOptions}
       />
 
-      <PaymentTable payments={payments} />
+      <Suspense fallback={<TableSkeleton />}>
+        <PaymentList
+          query={query}
+          status={status}
+          method={method}
+          type={type}
+          sort={sort}
+        />
+      </Suspense>
     </div>
   );
 }

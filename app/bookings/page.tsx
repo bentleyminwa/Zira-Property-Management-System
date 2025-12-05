@@ -1,8 +1,8 @@
-import { BookingTable } from '@/components/bookings/BookingTable';
+import { BookingList } from '@/components/bookings/BookingList';
+import { TableSkeleton } from '@/components/skeletons';
 import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
-import prisma from '@/lib/prisma';
-import { BookingStatus, Prisma } from '@prisma/client';
+import { Suspense } from 'react';
 
 interface BookingsProps {
   searchParams: Promise<{
@@ -17,47 +17,6 @@ export default async function Bookings({ searchParams }: BookingsProps) {
   const query = params.query;
   const status = params.status;
   const sort = params.sort;
-
-  // Build where clause
-  const where: Prisma.BookingWhereInput = {
-    AND: [
-      query
-        ? {
-            OR: [
-              {
-                tenant: {
-                  OR: [
-                    { firstName: { contains: query, mode: 'insensitive' } },
-                    { lastName: { contains: query, mode: 'insensitive' } },
-                    { email: { contains: query, mode: 'insensitive' } },
-                  ],
-                },
-              },
-              {
-                property: {
-                  name: { contains: query, mode: 'insensitive' },
-                },
-              },
-            ],
-          }
-        : {},
-      status && status !== 'ALL' ? { status: status as BookingStatus } : {},
-    ],
-  };
-
-  // Build orderBy clause
-  let orderBy: Prisma.BookingOrderByWithRelationInput = { createdAt: 'desc' };
-  if (sort === 'price_asc') orderBy = { totalPrice: 'asc' };
-  if (sort === 'price_desc') orderBy = { totalPrice: 'desc' };
-
-  const bookings = await prisma.booking.findMany({
-    where,
-    orderBy,
-    include: {
-      property: true,
-      tenant: true,
-    },
-  });
 
   const filterOptions = [
     {
@@ -91,7 +50,9 @@ export default async function Bookings({ searchParams }: BookingsProps) {
         sortOptions={sortOptions}
       />
 
-      <BookingTable bookings={bookings} />
+      <Suspense fallback={<TableSkeleton />}>
+        <BookingList query={query} status={status} sort={sort} />
+      </Suspense>
     </div>
   );
 }

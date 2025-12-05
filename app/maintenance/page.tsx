@@ -1,8 +1,8 @@
-import { MaintenanceTable } from '@/components/maintenance/MaintenanceTable';
+import { MaintenanceList } from '@/components/maintenance/MaintenanceList';
+import { TableSkeleton } from '@/components/skeletons';
 import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
-import prisma from '@/lib/prisma';
-import { MaintenancePriority, MaintenanceStatus, Prisma } from '@prisma/client';
+import { Suspense } from 'react';
 
 interface MaintenanceProps {
   searchParams: Promise<{
@@ -19,44 +19,6 @@ export default async function Maintenance({ searchParams }: MaintenanceProps) {
   const status = params.status;
   const priority = params.priority;
   const sort = params.sort;
-
-  // Build where clause
-  const where: Prisma.MaintenanceWhereInput = {
-    AND: [
-      query
-        ? {
-            OR: [
-              { title: { contains: query, mode: 'insensitive' } },
-              { description: { contains: query, mode: 'insensitive' } },
-              {
-                property: {
-                  name: { contains: query, mode: 'insensitive' },
-                },
-              },
-            ],
-          }
-        : {},
-      status && status !== 'ALL' ? { status: status as MaintenanceStatus } : {},
-      priority && priority !== 'ALL'
-        ? { priority: priority as MaintenancePriority }
-        : {},
-    ],
-  };
-
-  // Build orderBy clause
-  let orderBy: Prisma.MaintenanceOrderByWithRelationInput = {
-    createdAt: 'desc',
-  };
-  if (sort === 'oldest') orderBy = { createdAt: 'asc' };
-  if (sort === 'priority_high') orderBy = { priority: 'desc' };
-
-  const maintenanceRequests = await prisma.maintenance.findMany({
-    where,
-    orderBy,
-    include: {
-      property: true,
-    },
-  });
 
   const filterOptions = [
     {
@@ -99,7 +61,14 @@ export default async function Maintenance({ searchParams }: MaintenanceProps) {
         sortOptions={sortOptions}
       />
 
-      <MaintenanceTable maintenanceRequests={maintenanceRequests} />
+      <Suspense fallback={<TableSkeleton />}>
+        <MaintenanceList
+          query={query}
+          status={status}
+          priority={priority}
+          sort={sort}
+        />
+      </Suspense>
     </div>
   );
 }

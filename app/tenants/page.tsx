@@ -1,8 +1,8 @@
-import { TenantTable } from '@/components/tenants/TenantTable';
+import { TableSkeleton } from '@/components/skeletons';
+import { TenantList } from '@/components/tenants/TenantList';
 import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
-import prisma from '@/lib/prisma';
-import { Prisma } from '@prisma/client';
+import { Suspense } from 'react';
 
 interface TenantsProps {
   searchParams: Promise<{
@@ -15,28 +15,6 @@ export default async function Tenants({ searchParams }: TenantsProps) {
   const params = await searchParams;
   const query = params.query;
   const sort = params.sort;
-
-  // Build where clause
-  const where: Prisma.TenantWhereInput = query
-    ? {
-        OR: [
-          { firstName: { contains: query, mode: 'insensitive' } },
-          { lastName: { contains: query, mode: 'insensitive' } },
-          { email: { contains: query, mode: 'insensitive' } },
-        ],
-      }
-    : {};
-
-  // Build orderBy clause
-  let orderBy: Prisma.TenantOrderByWithRelationInput = { createdAt: 'desc' };
-  if (sort === 'oldest') orderBy = { createdAt: 'asc' };
-  if (sort === 'name_asc') orderBy = { firstName: 'asc' };
-  if (sort === 'name_desc') orderBy = { firstName: 'desc' };
-
-  const tenants = await prisma.tenant.findMany({
-    where,
-    orderBy,
-  });
 
   const sortOptions = [
     { label: 'Newest', value: 'newest' },
@@ -57,7 +35,9 @@ export default async function Tenants({ searchParams }: TenantsProps) {
         sortOptions={sortOptions}
       />
 
-      <TenantTable tenants={tenants} />
+      <Suspense fallback={<TableSkeleton />}>
+        <TenantList query={query} sort={sort} />
+      </Suspense>
     </div>
   );
 }
