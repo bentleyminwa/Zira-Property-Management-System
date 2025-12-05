@@ -81,3 +81,35 @@ export function CardGridSkeleton() {
     </div>
   );
 }
+
+export function PropertyDetailsSkeleton() {
+  return (
+    <div className='space-y-6'>
+      <div className='flex flex-col gap-4 md:flex-row md:items-start md:justify-between'>
+        <div className='space-y-2'>
+          <Skeleton className='h-8 w-[300px]' />
+          <Skeleton className='h-4 w-[200px]' />
+        </div>
+        <div className='flex items-center gap-2'>
+          <Skeleton className='h-10 w-[100px]' />
+          <Skeleton className='h-10 w-[100px]' />
+        </div>
+      </div>
+      <Skeleton className='h-[400px] w-full rounded-xl' />
+      <div className='grid gap-6 md:grid-cols-3'>
+        <div className='md:col-span-2 space-y-6'>
+          <div className='grid gap-4 sm:grid-cols-4'>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className='h-24 rounded-lg' />
+            ))}
+          </div>
+          <Skeleton className='h-32 w-full rounded-lg' />
+          <Skeleton className='h-[300px] w-full rounded-lg' />
+        </div>
+        <div className='space-y-6'>
+          <Skeleton className='h-[200px] w-full rounded-lg' />
+        </div>
+      </div>
+    </div>
+  );
+}
