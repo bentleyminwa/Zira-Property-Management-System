@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { ColumnDef, DataTable } from '@/components/ui/DataTable';
 import { DataTableRowActions } from '@/components/ui/DataTableRowActions';
@@ -8,6 +10,7 @@ import {
 import { formatCurrency } from '@/lib/utils';
 import { Booking, Property, Tenant } from '@prisma/client';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 type BookingWithRelations = Booking & {
   property: Property;
@@ -101,9 +104,33 @@ const columns: ColumnDef<BookingWithRelations>[] = [
 ];
 
 export function BookingTable({ bookings }: BookingTableProps) {
+  const router = useRouter();
+
+  const columnsWithActions: ColumnDef<BookingWithRelations>[] = [
+    ...columns.slice(0, -1), // All columns except Actions
+    {
+      header: 'Actions',
+      align: 'right',
+      cell: (booking) => (
+        <DataTableRowActions>
+          <DropdownMenuItem
+            onClick={() => router.push(`/bookings/${booking.id}`)}
+          >
+            View details
+          </DropdownMenuItem>
+          <DropdownMenuItem>Edit booking</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className='text-destructive'>
+            Cancel booking
+          </DropdownMenuItem>
+        </DataTableRowActions>
+      ),
+    },
+  ];
+
   return (
     <DataTable
-      columns={columns}
+      columns={columnsWithActions}
       data={bookings}
       emptyMessage='No bookings found.'
       getRowKey={(booking) => booking.id}
