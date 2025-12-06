@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { ColumnDef, DataTable } from '@/components/ui/DataTable';
 import { DataTableRowActions } from '@/components/ui/DataTableRowActions';
@@ -8,6 +10,7 @@ import {
 import { formatCurrency } from '@/lib/utils';
 import { Booking, Payment, Property, Tenant } from '@prisma/client';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 type PaymentWithRelations = Payment & {
   booking: Booking & {
@@ -107,33 +110,48 @@ const columns: ColumnDef<PaymentWithRelations>[] = [
   {
     header: 'Actions',
     align: 'right',
-    cell: (payment) => (
-      <DataTableRowActions>
-        <DropdownMenuItem>View details</DropdownMenuItem>
-        <DropdownMenuItem>Edit payment</DropdownMenuItem>
-        {payment.status === 'PENDING' && (
-          <DropdownMenuItem>Mark as completed</DropdownMenuItem>
-        )}
-        <DropdownMenuSeparator />
-        {payment.status === 'COMPLETED' && (
-          <DropdownMenuItem className='text-destructive'>
-            Refund payment
-          </DropdownMenuItem>
-        )}
-        {payment.status === 'PENDING' && (
-          <DropdownMenuItem className='text-destructive'>
-            Mark as failed
-          </DropdownMenuItem>
-        )}
-      </DataTableRowActions>
-    ),
+    cell: () => null, // Placeholder
   },
 ];
 
 export function PaymentTable({ payments }: PaymentTableProps) {
+  const router = useRouter();
+
+  const columnsWithActions: ColumnDef<PaymentWithRelations>[] = [
+    ...columns.slice(0, -1),
+    {
+      header: 'Actions',
+      align: 'right',
+      cell: (payment) => (
+        <DataTableRowActions>
+          <DropdownMenuItem
+            onClick={() => router.push(`/payments/${payment.id}`)}
+          >
+            View details
+          </DropdownMenuItem>
+          <DropdownMenuItem>Edit payment</DropdownMenuItem>
+          {payment.status === 'PENDING' && (
+            <DropdownMenuItem>Mark as completed</DropdownMenuItem>
+          )}
+          <DropdownMenuSeparator />
+          {payment.status === 'COMPLETED' && (
+            <DropdownMenuItem className='text-destructive'>
+              Refund payment
+            </DropdownMenuItem>
+          )}
+          {payment.status === 'PENDING' && (
+            <DropdownMenuItem className='text-destructive'>
+              Mark as failed
+            </DropdownMenuItem>
+          )}
+        </DataTableRowActions>
+      ),
+    },
+  ];
+
   return (
     <DataTable
-      columns={columns}
+      columns={columnsWithActions}
       data={payments}
       emptyMessage='No payments found.'
       getRowKey={(payment) => payment.id}
