@@ -1,8 +1,12 @@
+'use client';
+
+import { Button } from '@/components/ui/button';
 import { BookingTable } from '@/features/bookings/components/BookingTable';
 import { TenantInfo } from '@/features/tenants/components/TenantInfo';
 import { TenantPaymentHistory } from '@/features/tenants/components/TenantPaymentHistory';
 import { Booking, Payment, Property, Tenant } from '@prisma/client';
-import { CalendarDays } from 'lucide-react';
+import { ArrowLeft, CalendarDays } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 type TenantWithRelations = Tenant & {
   bookings: (Booking & {
@@ -21,10 +25,22 @@ interface TenantDetailsProps {
 }
 
 export function TenantDetails({ tenant }: TenantDetailsProps) {
+  const router = useRouter();
+
   return (
     <div className='flex flex-col gap-8'>
-      <div className='flex items-center justify-between'>
-        <h1 className='text-3xl font-bold tracking-tight'>Tenant Details</h1>
+      <div>
+        <Button
+          variant='ghost'
+          className='gap-2 pl-0 hover:bg-transparent hover:text-primary mb-4'
+          onClick={() => router.back()}
+        >
+          <ArrowLeft className='h-4 w-4' />
+          Back
+        </Button>
+        <div className='flex items-center justify-between'>
+          <h1 className='text-3xl font-bold tracking-tight'>Tenant Details</h1>
+        </div>
       </div>
 
       <div className='grid gap-8 md:grid-cols-[350px_1fr]'>

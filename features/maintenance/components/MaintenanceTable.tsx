@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { ColumnDef, DataTable } from '@/components/ui/DataTable';
 import { DataTableRowActions } from '@/components/ui/DataTableRowActions';
@@ -7,6 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Maintenance, Property } from '@prisma/client';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 type MaintenanceWithProperty = Maintenance & {
   property: Property;
@@ -53,25 +56,40 @@ const columns: ColumnDef<MaintenanceWithProperty>[] = [
   {
     header: 'Actions',
     align: 'right',
-    cell: () => (
-      <DataTableRowActions>
-        <DropdownMenuItem>View details</DropdownMenuItem>
-        <DropdownMenuItem>Edit request</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className='text-destructive'>
-          Delete request
-        </DropdownMenuItem>
-      </DataTableRowActions>
-    ),
+    cell: () => null, // Placeholder
   },
 ];
 
 export function MaintenanceTable({
   maintenanceRequests,
 }: MaintenanceTableProps) {
+  const router = useRouter();
+
+  const columnsWithActions: ColumnDef<MaintenanceWithProperty>[] = [
+    ...columns.slice(0, -1),
+    {
+      header: 'Actions',
+      align: 'right',
+      cell: (item) => (
+        <DataTableRowActions>
+          <DropdownMenuItem
+            onClick={() => router.push(`/maintenance/${item.id}`)}
+          >
+            View details
+          </DropdownMenuItem>
+          <DropdownMenuItem>Edit request</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className='text-destructive'>
+            Delete request
+          </DropdownMenuItem>
+        </DataTableRowActions>
+      ),
+    },
+  ];
+
   return (
     <DataTable
-      columns={columns}
+      columns={columnsWithActions}
       data={maintenanceRequests}
       emptyMessage='No maintenance requests found.'
       getRowKey={(item) => item.id}
