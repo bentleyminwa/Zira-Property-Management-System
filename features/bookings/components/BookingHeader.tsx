@@ -20,7 +20,7 @@ export function BookingHeader({ booking }: BookingHeaderProps) {
         onClick={() => router.back()}
       >
         <ArrowLeft className='h-4 w-4' />
-        Back to Bookings
+        Back
       </Button>
 
       <div className='flex flex-col gap-4 md:flex-row md:items-start md:justify-between'>
