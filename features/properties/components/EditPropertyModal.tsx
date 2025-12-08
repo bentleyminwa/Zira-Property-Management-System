@@ -16,7 +16,7 @@ import { Property } from '@prisma/client';
 import { Edit } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { updateProperty } from '../actions/properties';
+import { updateProperty } from '../actions';
 
 interface EditPropertyModalProps {
   property: Property;

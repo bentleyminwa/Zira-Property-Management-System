@@ -15,7 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { createProperty } from '../actions/properties';
+import { createProperty } from '../actions';
 
 export function AddPropertyModal() {
   const [open, setOpen] = useState(false);

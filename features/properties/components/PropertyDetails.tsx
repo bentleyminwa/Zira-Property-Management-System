@@ -12,7 +12,6 @@ import {
   Bath,
   BedDouble,
   CalendarDays,
-  Edit,
   Home,
   MapPin,
   Maximize,
