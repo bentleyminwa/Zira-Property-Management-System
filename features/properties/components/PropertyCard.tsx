@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -6,6 +8,7 @@ import { Property } from '@prisma/client';
 import { Bath, Bed, Eye, MapPin, Pencil, Ruler } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { EditPropertyModal } from './EditPropertyModal';
 
 interface PropertyCardProps {
   property: Property;
@@ -29,10 +32,15 @@ export function PropertyCard({ property }: PropertyCardProps) {
               View
             </Button>
           </Link>
-          <Button variant='secondary' size='sm' className='gap-2'>
-            <Pencil className='h-4 w-4' />
-            Edit
-          </Button>
+          <EditPropertyModal
+            property={property}
+            customTrigger={
+              <Button variant='secondary' size='sm' className='gap-2'>
+                <Pencil className='h-4 w-4' />
+                Edit
+              </Button>
+            }
+          />
         </div>
 
         <div className='absolute left-2 top-2 flex gap-2'>

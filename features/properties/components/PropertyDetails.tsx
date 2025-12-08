@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { EditPropertyModal } from './EditPropertyModal';
 // import Image from 'next/image';
 
 interface PropertyDetailsProps {
@@ -85,10 +86,7 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
           </div>
         </div>
         <div className='flex items-center gap-2'>
-          <Button variant='outline' size='sm'>
-            <Edit className='mr-2 h-4 w-4' />
-            Edit
-          </Button>
+          <EditPropertyModal property={property} />
           <Button variant='destructive' size='sm'>
             <Trash2 className='mr-2 h-4 w-4' />
             Delete
