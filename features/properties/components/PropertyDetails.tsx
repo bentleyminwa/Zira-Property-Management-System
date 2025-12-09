@@ -15,11 +15,11 @@ import {
   Home,
   MapPin,
   Maximize,
-  Trash2,
   Wrench,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { DeletePropertyDialog } from './DeletePropertyDialog';
 import { EditPropertyModal } from './EditPropertyModal';
 // import Image from 'next/image';
 
@@ -86,10 +86,7 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
         </div>
         <div className='flex items-center gap-2'>
           <EditPropertyModal property={property} />
-          <Button variant='destructive' size='sm'>
-            <Trash2 className='mr-2 h-4 w-4' />
-            Delete
-          </Button>
+          <DeletePropertyDialog property={property} />
         </div>
       </div>
 

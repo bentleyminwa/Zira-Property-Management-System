@@ -13,9 +13,9 @@ import { ReactNode, useState } from 'react';
 
 interface ModalProps {
   trigger: ReactNode;
-  title: string;
-  description?: string;
-  children: ReactNode;
+  title: ReactNode;
+  description?: ReactNode;
+  children?: ReactNode;
   footerContent?: ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
