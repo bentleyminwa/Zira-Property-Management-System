@@ -15,6 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { createProperty } from '../actions';
 
 export function AddPropertyModal() {
@@ -29,11 +30,18 @@ export function AddPropertyModal() {
     const formData = new FormData(event.currentTarget);
 
     try {
-      await createProperty(formData);
-      setOpen(false);
-      router.refresh();
+      const result = await createProperty(formData);
+
+      if (result.success) {
+        toast.success(result.message);
+        setOpen(false);
+        router.refresh();
+      } else {
+        toast.error(result.message);
+      }
     } catch (error) {
       console.error(error);
+      toast.error('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }

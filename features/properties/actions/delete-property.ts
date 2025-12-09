@@ -5,6 +5,19 @@ import { revalidatePath } from 'next/cache';
 
 export async function deleteProperty(id: string) {
   try {
+    // Fetch property name before deletion
+    const property = await prisma.property.findUnique({
+      where: { id },
+      select: { name: true },
+    });
+
+    if (!property) {
+      return {
+        success: false,
+        error: 'Property not found.',
+      };
+    }
+
     // Delete in correct order to handle foreign key constraints
     // 1. Delete payments related to bookings of this property
     await prisma.payment.deleteMany({
@@ -37,7 +50,10 @@ export async function deleteProperty(id: string) {
     // Revalidate the properties list page
     revalidatePath('/properties');
 
-    return { success: true };
+    return {
+      success: true,
+      message: `Property "${property.name}" deleted successfully`,
+    };
   } catch (error) {
     console.error('Error deleting property:', error);
     return {

@@ -1,5 +1,6 @@
 import AppLayout from '@/components/layout/AppLayout';
 import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/sonner';
 import type { Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
 import './globals.css';
@@ -25,6 +26,7 @@ export default function RootLayout({
       >
         <ThemeProvider defaultTheme='light' storageKey='zira-theme'>
           <AppLayout>{children}</AppLayout>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

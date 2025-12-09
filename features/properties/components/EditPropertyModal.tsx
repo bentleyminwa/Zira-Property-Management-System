@@ -16,6 +16,7 @@ import { Property } from '@prisma/client';
 import { Edit } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { updateProperty } from '../actions';
 
 interface EditPropertyModalProps {
@@ -38,11 +39,18 @@ export function EditPropertyModal({
     const formData = new FormData(event.currentTarget);
 
     try {
-      await updateProperty(property.id, formData);
-      setOpen(false);
-      router.refresh();
+      const result = await updateProperty(property.id, formData);
+
+      if (result.success) {
+        toast.success(result.message);
+        setOpen(false);
+        router.refresh();
+      } else {
+        toast.error(result.message);
+      }
     } catch (error) {
       console.error(error);
+      toast.error('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }

@@ -6,6 +6,7 @@ import { Booking, Maintenance, Property } from '@prisma/client';
 import { AlertTriangle, Loader2, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { deleteProperty } from '../actions';
 
 interface DeletePropertyDialogProps {
@@ -32,16 +33,21 @@ export function DeletePropertyDialog({ property }: DeletePropertyDialogProps) {
       const result = await deleteProperty(property.id);
 
       if (result.success) {
+        toast.success(result.message);
         // Redirect to properties list
         router.push('/properties');
         router.refresh();
       } else {
-        setError(result.error || 'Failed to delete property.');
+        const errorMessage = result.error || 'Failed to delete property.';
+        setError(errorMessage);
+        toast.error(errorMessage);
         setIsDeleting(false);
       }
     } catch (err) {
       console.error('Error deleting property:', err);
-      setError('An unexpected error occurred.');
+      const errorMessage = 'An unexpected error occurred.';
+      setError(errorMessage);
+      toast.error(errorMessage);
       setIsDeleting(false);
     }
   };
