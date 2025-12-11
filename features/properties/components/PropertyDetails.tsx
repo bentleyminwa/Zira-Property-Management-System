@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useBreadcrumb } from '@/contexts/BreadcrumbContext';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, formatDate } from '@/lib/utils';
 import { Booking, Maintenance, Property } from '@prisma/client';
 import {
   ArrowLeft,
@@ -203,8 +203,8 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
                         >
                           <div>
                             <p className='font-medium'>
-                              {new Date(booking.startDate).toLocaleDateString()}{' '}
-                              - {new Date(booking.endDate).toLocaleDateString()}
+                              {formatDate(booking.startDate)} -{' '}
+                              {formatDate(booking.endDate)}
                             </p>
                             <p className='text-sm text-muted-foreground'>
                               {booking.status}
@@ -247,7 +247,7 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
                             </p>
                           </div>
                           <div className='text-sm text-muted-foreground'>
-                            {new Date(request.createdAt).toLocaleDateString()}
+                            {formatDate(request.createdAt)}
                           </div>
                         </div>
                       ))}

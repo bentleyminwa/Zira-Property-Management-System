@@ -11,3 +11,11 @@ export function formatCurrency(amount: number) {
     currency: 'USD',
   }).format(amount);
 }
+
+export function formatDate(date: Date | string | number) {
+  return new Date(date).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}

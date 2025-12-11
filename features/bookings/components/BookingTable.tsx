@@ -7,9 +7,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, formatDate } from '@/lib/utils';
 import { Booking, Property, Tenant } from '@prisma/client';
-import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 
 type BookingWithRelations = Booking & {
@@ -51,12 +50,10 @@ const columns: ColumnDef<BookingWithRelations>[] = [
     cell: (booking) => (
       <div className='flex flex-col gap-1'>
         <span className='whitespace-nowrap'>
-          {format(new Date(booking.startDate), 'MMM d, yyyy')}
+          {formatDate(booking.startDate)}
         </span>
         <span className='text-xs text-muted-foreground'>to</span>
-        <span className='whitespace-nowrap'>
-          {format(new Date(booking.endDate), 'MMM d, yyyy')}
-        </span>
+        <span className='whitespace-nowrap'>{formatDate(booking.endDate)}</span>
       </div>
     ),
   },

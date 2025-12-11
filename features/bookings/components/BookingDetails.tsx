@@ -45,7 +45,7 @@ export function BookingDetails({ booking }: BookingDetailsProps) {
         </div>
 
         <div className='space-y-6'>
-          <BookingQuickActions />
+          <BookingQuickActions booking={booking} />
           <BookingSummary booking={booking} />
         </div>
       </div>
