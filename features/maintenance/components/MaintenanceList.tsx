@@ -1,5 +1,6 @@
 import { MaintenanceTable } from '@/features/maintenance/components/MaintenanceTable';
 import prisma from '@/lib/prisma';
+import { serializeDecimal } from '@/lib/utils';
 import { MaintenancePriority, MaintenanceStatus, Prisma } from '@prisma/client';
 
 interface MaintenanceListProps {
@@ -53,5 +54,9 @@ export async function MaintenanceList({
     },
   });
 
-  return <MaintenanceTable maintenanceRequests={maintenanceRequests} />;
+  return (
+    <MaintenanceTable
+      maintenanceRequests={serializeDecimal(maintenanceRequests)}
+    />
+  );
 }

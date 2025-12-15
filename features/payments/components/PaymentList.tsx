@@ -1,5 +1,6 @@
 import { PaymentTable } from '@/features/payments/components/PaymentTable';
 import prisma from '@/lib/prisma';
+import { serializeDecimal } from '@/lib/utils';
 import {
   PaymentMethod,
   PaymentStatus,
@@ -68,5 +69,5 @@ export async function PaymentList({
     },
   });
 
-  return <PaymentTable payments={payments} />;
+  return <PaymentTable payments={serializeDecimal(payments)} />;
 }

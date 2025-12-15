@@ -1,5 +1,6 @@
 import { PropertyCard } from '@/features/properties/components/PropertyCard';
 import prisma from '@/lib/prisma';
+import { serializeDecimal } from '@/lib/utils';
 import { Prisma, PropertyStatus, PropertyType } from '@prisma/client';
 
 interface PropertyListProps {
@@ -55,7 +56,7 @@ export async function PropertyList({
   return (
     <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
       {properties.map((property) => (
-        <PropertyCard key={property.id} property={property} />
+        <PropertyCard key={property.id} property={serializeDecimal(property)} />
       ))}
     </div>
   );

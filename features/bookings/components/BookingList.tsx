@@ -1,5 +1,6 @@
 import { BookingTable } from '@/features/bookings/components/BookingTable';
 import prisma from '@/lib/prisma';
+import { serializeDecimal } from '@/lib/utils';
 import { BookingStatus, Prisma } from '@prisma/client';
 
 interface BookingListProps {
@@ -50,5 +51,5 @@ export async function BookingList({ query, status, sort }: BookingListProps) {
     },
   });
 
-  return <BookingTable bookings={bookings} />;
+  return <BookingTable bookings={serializeDecimal(bookings)} />;
 }
