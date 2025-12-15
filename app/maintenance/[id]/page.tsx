@@ -1,5 +1,6 @@
 import { MaintenanceDetails } from '@/features/maintenance/components/MaintenanceDetails';
 import prisma from '@/lib/prisma';
+import { serializeDecimal } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 
 interface MaintenancePageProps {
@@ -23,5 +24,5 @@ export default async function MaintenancePage(props: MaintenancePageProps) {
     notFound();
   }
 
-  return <MaintenanceDetails maintenance={maintenance} />;
+  return <MaintenanceDetails maintenance={serializeDecimal(maintenance)} />;
 }

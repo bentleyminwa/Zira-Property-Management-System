@@ -1,6 +1,7 @@
 import { PropertyDetailsSkeleton } from '@/components/skeletons';
 import { BookingDetails } from '@/features/bookings/components/BookingDetails';
 import prisma from '@/lib/prisma';
+import { serializeDecimal } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -26,7 +27,7 @@ async function BookingDetailsFetcher({ id }: { id: string }) {
     notFound();
   }
 
-  return <BookingDetails booking={booking} />;
+  return <BookingDetails booking={serializeDecimal(booking)} />;
 }
 
 export default async function BookingPage({ params }: BookingPageProps) {

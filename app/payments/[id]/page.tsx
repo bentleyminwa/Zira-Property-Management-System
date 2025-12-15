@@ -1,5 +1,6 @@
 import { PaymentDetails } from '@/features/payments/components/PaymentDetails';
 import prisma from '@/lib/prisma';
+import { serializeDecimal } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 
 interface PaymentPageProps {
@@ -28,5 +29,5 @@ export default async function PaymentPage(props: PaymentPageProps) {
     notFound();
   }
 
-  return <PaymentDetails payment={payment} />;
+  return <PaymentDetails payment={serializeDecimal(payment)} />;
 }

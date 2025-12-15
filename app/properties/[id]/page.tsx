@@ -1,6 +1,7 @@
 import { PropertyDetailsSkeleton } from '@/components/skeletons';
 import { PropertyDetails } from '@/features/properties/components/PropertyDetails';
 import prisma from '@/lib/prisma';
+import { serializeDecimal } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -29,7 +30,7 @@ async function PropertyDetailsFetcher({ id }: { id: string }) {
     notFound();
   }
 
-  return <PropertyDetails property={property} />;
+  return <PropertyDetails property={serializeDecimal(property)} />;
 }
 
 export default async function PropertyPage({ params }: PropertyPageProps) {
