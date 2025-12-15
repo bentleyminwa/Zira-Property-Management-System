@@ -1,27 +1,12 @@
-import { PropertyStatusChart } from '@/features/dashboard/components/PropertyStatusChart';
-import { RevenueChart } from '@/features/dashboard/components/RevenueChart';
 import { prisma } from '@/lib/prisma';
+import { PropertyStatusChart, RevenueChart } from '.';
+import { months } from '../config';
 
 export async function DashboardCharts() {
   const [properties, payments] = await Promise.all([
     prisma.property.findMany(),
     prisma.payment.findMany(),
   ]);
-
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
 
   const currentYear = new Date().getFullYear();
   const revenueByMonth = months.map((month, index) => {
