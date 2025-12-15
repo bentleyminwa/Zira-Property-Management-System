@@ -40,7 +40,7 @@ export function KPICard({
             <span
               className={cn(
                 'text-xs font-medium',
-                trend.isPositive ? 'text-green-600' : 'text-red-600'
+                trend.isPositive ? 'text-green-600' : 'text-rose-500'
               )}
             >
               {trend.isPositive ? '+' : ''}
