@@ -1,6 +1,5 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
+import { FormError } from '@/components/ui/form-error';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -54,11 +53,7 @@ export function AccountForm() {
               Name
             </label>
             <Input placeholder='Your name' {...form.register('name')} />
-            {form.formState.errors.name && (
-              <p className='text-sm font-medium text-destructive'>
-                {form.formState.errors.name.message}
-              </p>
-            )}
+            <FormError message={form.formState.errors.name?.message} />
             <p className='text-sm text-muted-foreground'>
               This is the name that will be displayed on your profile and in
               emails.

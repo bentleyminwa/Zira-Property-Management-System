@@ -3,6 +3,7 @@ import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { AddPropertyModal } from '@/features/properties/components/AddPropertyModal';
 import { PropertyList } from '@/features/properties/components/PropertyList';
+import { filterOptions, sortOptions } from '@/features/properties/config';
 import { Suspense } from 'react';
 
 interface PropertiesProps {
@@ -20,34 +21,6 @@ export default async function Properties({ searchParams }: PropertiesProps) {
   const status = params.status;
   const type = params.type;
   const sort = params.sort;
-
-  const filterOptions = [
-    {
-      key: 'status',
-      label: 'Status',
-      options: [
-        { label: 'Available', value: 'AVAILABLE' },
-        { label: 'Rented', value: 'RENTED' },
-        { label: 'Maintenance', value: 'MAINTENANCE' },
-      ],
-    },
-    {
-      key: 'type',
-      label: 'Type',
-      options: [
-        { label: 'Apartment', value: 'APARTMENT' },
-        { label: 'House', value: 'HOUSE' },
-        { label: 'Commercial', value: 'COMMERCIAL' },
-        { label: 'Condo', value: 'CONDO' },
-      ],
-    },
-  ];
-
-  const sortOptions = [
-    { label: 'Newest', value: 'newest' },
-    { label: 'Price: Low to High', value: 'price_asc' },
-    { label: 'Price: High to Low', value: 'price_desc' },
-  ];
 
   return (
     <div className='p-6 space-y-6'>

@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -10,6 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'; // We need to check if these exist or create them
+import { FormError } from '@/components/ui/form-error';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea'; // Need to check if this exists
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -103,11 +102,7 @@ export function ProfileForm() {
               Username
             </label>
             <Input placeholder='shadcn' {...form.register('username')} />
-            {form.formState.errors.username && (
-              <p className='text-sm font-medium text-destructive'>
-                {form.formState.errors.username.message}
-              </p>
-            )}
+            <FormError message={form.formState.errors.username?.message} />
             <p className='text-sm text-muted-foreground'>
               This is your public display name.
             </p>
@@ -118,11 +113,7 @@ export function ProfileForm() {
               Email
             </label>
             <Input placeholder='m@example.com' {...form.register('email')} />
-            {form.formState.errors.email && (
-              <p className='text-sm font-medium text-destructive'>
-                {form.formState.errors.email.message}
-              </p>
-            )}
+            <FormError message={form.formState.errors.email?.message} />
           </div>
 
           <div className='space-y-2'>
@@ -134,11 +125,7 @@ export function ProfileForm() {
               placeholder='Tell us a little bit about yourself'
               {...form.register('bio')}
             />
-            {form.formState.errors.bio && (
-              <p className='text-sm font-medium text-destructive'>
-                {form.formState.errors.bio.message}
-              </p>
-            )}
+            <FormError message={form.formState.errors.bio?.message} />
           </div>
 
           <div className='space-y-2'>
