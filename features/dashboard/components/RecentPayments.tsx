@@ -13,7 +13,7 @@ interface RecentPaymentsProps {
 
 export function RecentPayments({ payments }: RecentPaymentsProps) {
   return (
-    <Card className='col-span-4 lg:col-span-4'>
+    <Card className='col-span-4'>
       <CardHeader>
         <CardTitle>Recent Payments</CardTitle>
       </CardHeader>

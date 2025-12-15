@@ -19,7 +19,7 @@ export async function DashboardRecent() {
   return (
     <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-7'>
       <RecentBookings bookings={recentBookings} />
-      <div className='col-span-4 lg:col-span-4'>
+      <div className='col-span-4'>
         <RecentPayments payments={recentPayments} />
       </div>
     </div>
