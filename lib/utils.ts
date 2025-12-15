@@ -49,10 +49,6 @@ export function serializeDecimal(obj: any): any {
 
   const newObj: any = {};
   for (const key in obj) {
-    // Skip internal React properties or other non-data keys if necessary,
-    // but verifying own property is usually enough.
-    // Also explicitly skip functions to avoid "Functions cannot be passed..." errors
-    // if a data object happens to have a function property.
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const value = obj[key];
       if (typeof value === 'function') {
