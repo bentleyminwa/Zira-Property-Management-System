@@ -1,5 +1,5 @@
 import { TenantDetails } from '@/features/tenants/components/TenantDetails';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 
 interface TenantPageProps {

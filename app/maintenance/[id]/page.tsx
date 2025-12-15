@@ -1,5 +1,5 @@
 import { MaintenanceDetails } from '@/features/maintenance/components/MaintenanceDetails';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { serializeDecimal } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 

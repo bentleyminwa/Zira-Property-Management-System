@@ -1,5 +1,5 @@
 import { PropertyCard } from '@/features/properties/components/PropertyCard';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { serializeDecimal } from '@/lib/utils';
 import { Prisma, PropertyStatus, PropertyType } from '@prisma/client';
 

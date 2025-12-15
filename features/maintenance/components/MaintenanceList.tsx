@@ -1,5 +1,5 @@
 import { MaintenanceTable } from '@/features/maintenance/components/MaintenanceTable';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { serializeDecimal } from '@/lib/utils';
 import { MaintenancePriority, MaintenanceStatus, Prisma } from '@prisma/client';
 

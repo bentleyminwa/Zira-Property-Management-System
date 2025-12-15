@@ -1,6 +1,6 @@
 'use server';
 
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { formDataToObject, formatZodErrors } from '@/lib/validation-helpers';
 import { revalidatePath } from 'next/cache';
 import { propertySchema } from '../types/schemas';

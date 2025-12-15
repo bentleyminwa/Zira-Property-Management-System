@@ -1,6 +1,6 @@
 import { RecentBookings } from '@/features/dashboard/components/RecentBookings';
 import { RecentPayments } from '@/features/dashboard/components/RecentPayments';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 export async function DashboardRecent() {
   const [recentBookings, recentPayments] = await Promise.all([

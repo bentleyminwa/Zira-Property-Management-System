@@ -1,6 +1,6 @@
 import { PropertyStatusChart } from '@/features/dashboard/components/PropertyStatusChart';
 import { RevenueChart } from '@/features/dashboard/components/RevenueChart';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 export async function DashboardCharts() {
   const [properties, payments] = await Promise.all([

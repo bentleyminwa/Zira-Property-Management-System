@@ -1,5 +1,5 @@
 import { KPICard } from '@/components/ui/KPICard';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { formatCurrency } from '@/lib/utils';
 import { Clock, DollarSign, TrendingUp, XCircle } from 'lucide-react';
 

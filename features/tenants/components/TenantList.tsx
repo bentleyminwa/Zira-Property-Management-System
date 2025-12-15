@@ -1,5 +1,5 @@
 import { TenantTable } from '@/features/tenants/components/TenantTable';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 
 interface TenantListProps {

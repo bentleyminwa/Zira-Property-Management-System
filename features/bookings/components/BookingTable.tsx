@@ -1,4 +1,7 @@
 'use client';
+import { cancelBooking } from '@/features/bookings/actions/cancel-booking';
+import { EditBookingModal } from '@/features/bookings/components/EditBookingModal'; // Import EditBookingModal
+import { toast } from 'sonner';
 
 import { Badge } from '@/components/ui/badge';
 import { ColumnDef, DataTable } from '@/components/ui/DataTable';
@@ -115,9 +118,28 @@ export function BookingTable({ bookings }: BookingTableProps) {
           >
             View details
           </DropdownMenuItem>
-          <DropdownMenuItem>Edit booking</DropdownMenuItem>
+          <EditBookingModal
+            booking={booking}
+            customTrigger={
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                Edit booking
+              </DropdownMenuItem>
+            }
+          />
           <DropdownMenuSeparator />
-          <DropdownMenuItem className='text-destructive'>
+          <DropdownMenuItem
+            className='text-destructive'
+            onClick={async () => {
+              if (confirm('Are you sure you want to cancel this booking?')) {
+                const result = await cancelBooking(booking.id);
+                if (result.success) {
+                  toast.success('Booking cancelled successfully');
+                } else {
+                  toast.error(result.message || 'Failed to cancel booking');
+                }
+              }
+            }}
+          >
             Cancel booking
           </DropdownMenuItem>
         </DataTableRowActions>

@@ -1,5 +1,5 @@
 import { BookingTable } from '@/features/bookings/components/BookingTable';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { serializeDecimal } from '@/lib/utils';
 import { BookingStatus, Prisma } from '@prisma/client';
 

@@ -29,8 +29,15 @@ enum PropertyType {
 enum BookingStatus {
   PENDING
   CONFIRMED
+  ACTIVE
   CANCELLED
   COMPLETED
+  TERMINATED
+}
+
+enum BookingType {
+  SHORT_TERM
+  LONG_TERM
 }
 
 enum MaintenanceStatus {
@@ -114,14 +121,21 @@ model Tenant {
 }
 
 model Booking {
-  id         String        @id @default(cuid())
-  startDate  DateTime
-  endDate    DateTime
-  status     BookingStatus @default(PENDING)
-  totalPrice Decimal       @db.Decimal(10, 2)
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  notes      String?       @db.Text
+  id            String        @id @default(cuid())
+  startDate     DateTime
+  endDate       DateTime
+  status        BookingStatus @default(PENDING)
+  type          BookingType   @default(SHORT_TERM)
+  totalPrice    Decimal       @db.Decimal(10, 2)
+  depositAmount Decimal?      @db.Decimal(10, 2)
+
+  moveInDate   DateTime?
+  moveOutDate  DateTime?
+  terminatedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  notes     String?  @db.Text
 
   propertyId String
   property   Property @relation(fields: [propertyId], references: [id])
@@ -129,7 +143,8 @@ model Booking {
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id])
 
-  payments Payment[]
+  payments    Payment[]
+  maintenance Maintenance[]
 }
 
 model Maintenance {
@@ -143,6 +158,9 @@ model Maintenance {
 
   propertyId String
   property   Property @relation(fields: [propertyId], references: [id])
+
+  bookingId String?
+  booking   Booking? @relation(fields: [bookingId], references: [id])
 }
 
 model Payment {

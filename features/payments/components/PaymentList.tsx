@@ -1,5 +1,5 @@
 import { PaymentTable } from '@/features/payments/components/PaymentTable';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { serializeDecimal } from '@/lib/utils';
 import {
   PaymentMethod,

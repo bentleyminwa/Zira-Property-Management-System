@@ -1,5 +1,5 @@
 import { PaymentDetails } from '@/features/payments/components/PaymentDetails';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { serializeDecimal } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 

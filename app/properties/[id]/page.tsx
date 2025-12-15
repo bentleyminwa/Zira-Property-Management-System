@@ -1,6 +1,6 @@
 import { PropertyDetailsSkeleton } from '@/components/skeletons';
 import { PropertyDetails } from '@/features/properties/components/PropertyDetails';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { serializeDecimal } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';

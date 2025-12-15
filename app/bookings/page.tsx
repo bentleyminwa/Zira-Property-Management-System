@@ -1,6 +1,7 @@
 import { TableSkeleton } from '@/components/skeletons';
 import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { AddBookingModal } from '@/features/bookings/components/AddBookingModal';
 import { BookingList } from '@/features/bookings/components/BookingList';
 import { Suspense } from 'react';
 
@@ -48,7 +49,9 @@ export default async function Bookings({ searchParams }: BookingsProps) {
         searchPlaceholder='Search bookings...'
         filterOptions={filterOptions}
         sortOptions={sortOptions}
-      />
+      >
+        <AddBookingModal />
+      </DataTableToolbar>
 
       <Suspense fallback={<TableSkeleton />}>
         <BookingList query={query} status={status} sort={sort} />
