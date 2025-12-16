@@ -17,11 +17,11 @@ export const propertySchema = z.object({
     .pipe(z.coerce.number({ message: 'Price must be a number' }))
     .refine((val) => val > 0, { message: 'Price must be greater than 0' }),
 
-  type: z.nativeEnum(PropertyType, {
+  type: z.enum(PropertyType, {
     message: 'Invalid property type',
   }),
 
-  status: z.nativeEnum(PropertyStatus, {
+  status: z.enum(PropertyStatus, {
     message: 'Invalid property status',
   }),
 
