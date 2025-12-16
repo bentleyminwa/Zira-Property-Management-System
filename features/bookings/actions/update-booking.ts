@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { BookingStatus } from '@prisma/client';
+import { BookingStatus, BookingType } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { checkAvailability } from '../lib/utils';
 
@@ -13,6 +13,8 @@ export async function updateBooking(
     totalPrice?: number;
     status?: BookingStatus;
     notes?: string;
+    type?: BookingType;
+    depositAmount?: number;
   }
 ) {
   try {

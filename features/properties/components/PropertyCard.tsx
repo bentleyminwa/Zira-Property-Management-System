@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { Property } from '@prisma/client';
 import { Bath, Bed, Eye, MapPin, Pencil, Ruler } from 'lucide-react';
-// import Image from 'next/image';
+// import Image from 'next/image'; --> I'll have to figure out how to use it without it giving me trouble🤯
 import Link from 'next/link';
 import { EditPropertyModal } from './EditPropertyModal';
 

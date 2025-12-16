@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 import { createBooking } from '../actions/create-booking';
 import { getBookingOptions } from '../actions/get-options';
 import { BookingFormData, bookingSchema } from '../types/schemas';
-import { BookingForm } from './BookingForm';
+import { BookingFormFields } from './booking-form-fields';
 
 export function AddBookingModal() {
   const [open, setOpen] = useState(false);
@@ -23,7 +23,14 @@ export function AddBookingModal() {
 
   const router = useRouter();
 
-  const form = useForm<BookingFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+    setValue,
+    watch,
+  } = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
       propertyId: '',
@@ -54,7 +61,7 @@ export function AddBookingModal() {
 
       if (result.success) {
         toast.success('Booking created successfully');
-        form.reset();
+        reset();
         setOpen(false);
         router.refresh();
       } else {
@@ -71,7 +78,10 @@ export function AddBookingModal() {
   return (
     <Modal
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        if (!isOpen) reset();
+      }}
       size='lg'
       trigger={
         <Button className='gap-2'>
@@ -84,19 +94,23 @@ export function AddBookingModal() {
       footerContent={
         <Button
           type='submit'
-          form='booking-form'
-          disabled={loading || !form.formState.isValid}
+          form='add-booking-form'
+          disabled={loading || !isValid}
         >
           {loading ? 'Creating...' : 'Create Booking'}
         </Button>
       }
     >
-      <BookingForm
-        form={form}
-        onSubmit={onSubmit}
-        properties={options.properties}
-        tenants={options.tenants}
-      />
+      <form id='add-booking-form' onSubmit={handleSubmit(onSubmit)}>
+        <BookingFormFields
+          register={register}
+          errors={errors}
+          setValue={setValue}
+          watch={watch}
+          properties={options.properties}
+          tenants={options.tenants}
+        />
+      </form>
     </Modal>
   );
 }

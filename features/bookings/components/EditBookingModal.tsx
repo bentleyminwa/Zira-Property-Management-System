@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 import { getBookingOptions } from '../actions/get-options';
 import { updateBooking } from '../actions/update-booking';
 import { BookingFormData, bookingSchema } from '../types/schemas';
-import { BookingForm } from './BookingForm';
+import { BookingFormFields } from './booking-form-fields';
 
 interface EditBookingModalProps {
   booking: Booking;
@@ -40,7 +40,14 @@ export function EditBookingModal({
     ? controlledOnOpenChange || (() => {})
     : setInternalOpen;
 
-  const form = useForm<BookingFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+    setValue,
+    watch,
+  } = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
       propertyId: booking.propertyId,
@@ -49,7 +56,11 @@ export function EditBookingModal({
         from: new Date(booking.startDate),
         to: new Date(booking.endDate),
       },
+      type: booking.type as any, // Cast to any or matching enum
       totalPrice: Number(booking.totalPrice),
+      depositAmount: booking.depositAmount
+        ? Number(booking.depositAmount)
+        : undefined,
       notes: booking.notes || '',
     },
   });
@@ -60,18 +71,22 @@ export function EditBookingModal({
         setOptions(data);
       });
       // Reset form values when modal opens to ensure fresh data
-      form.reset({
+      reset({
         propertyId: booking.propertyId,
         tenantId: booking.tenantId,
         dateRange: {
           from: new Date(booking.startDate),
           to: new Date(booking.endDate),
         },
+        type: booking.type as any,
         totalPrice: Number(booking.totalPrice),
+        depositAmount: booking.depositAmount
+          ? Number(booking.depositAmount)
+          : undefined,
         notes: booking.notes || '',
       });
     }
-  }, [open, booking, form]);
+  }, [open, booking, reset]);
 
   async function onSubmit(data: BookingFormData) {
     setLoading(true);
@@ -81,6 +96,8 @@ export function EditBookingModal({
         endDate: data.dateRange.to,
         totalPrice: data.totalPrice,
         notes: data.notes,
+        type: data.type,
+        depositAmount: data.depositAmount,
       });
 
       if (result.success) {
@@ -110,18 +127,30 @@ export function EditBookingModal({
         <Button
           type='submit'
           form={`edit-booking-form-${booking.id}`}
-          disabled={loading || !form.formState.isValid}
+          disabled={loading || !isValid}
         >
           {loading ? 'Saving...' : 'Save Changes'}
         </Button>
       }
     >
-      <BookingForm
-        form={form}
-        onSubmit={onSubmit}
-        properties={options.properties}
-        tenants={options.tenants}
-      />
+      <form
+        id={`edit-booking-form-${booking.id}`}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <BookingFormFields
+          register={register}
+          errors={errors}
+          setValue={setValue}
+          watch={watch}
+          properties={options.properties}
+          tenants={options.tenants}
+          defaultValues={{
+            propertyId: booking.propertyId,
+            tenantId: booking.tenantId,
+            type: booking.type as any,
+          }}
+        />
+      </form>
     </Modal>
   );
 }

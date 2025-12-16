@@ -3,6 +3,7 @@ import { DataTableToolbar } from '@/components/ui/DataTableToolbar';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { AddBookingModal } from '@/features/bookings/components/AddBookingModal';
 import { BookingList } from '@/features/bookings/components/BookingList';
+import { filterOptions, sortOptions } from '@/features/properties/config';
 import { Suspense } from 'react';
 
 interface BookingsProps {
@@ -18,25 +19,6 @@ export default async function Bookings({ searchParams }: BookingsProps) {
   const query = params.query;
   const status = params.status;
   const sort = params.sort;
-
-  const filterOptions = [
-    {
-      key: 'status',
-      label: 'Status',
-      options: [
-        { label: 'Pending', value: 'PENDING' },
-        { label: 'Confirmed', value: 'CONFIRMED' },
-        { label: 'Cancelled', value: 'CANCELLED' },
-        { label: 'Completed', value: 'COMPLETED' },
-      ],
-    },
-  ];
-
-  const sortOptions = [
-    { label: 'Newest', value: 'newest' },
-    { label: 'Price: Low to High', value: 'price_asc' },
-    { label: 'Price: High to Low', value: 'price_desc' },
-  ];
 
   return (
     <div className='p-6 space-y-6'>
