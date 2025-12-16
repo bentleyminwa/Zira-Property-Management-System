@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { EmptyState } from './empty-state';
 
 export interface ColumnDef<T> {
   header: string;
@@ -11,13 +12,17 @@ interface DataTableProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
   emptyMessage?: string;
+  emptyTitle?: string;
+  emptyDescription?: string;
   getRowKey: (item: T) => string;
 }
 
 export function DataTable<T>({
   columns,
   data,
-  emptyMessage = 'No data found.',
+  emptyMessage,
+  emptyTitle = 'No data found',
+  emptyDescription = 'Try adjusting your search or filters.',
   getRowKey,
 }: DataTableProps<T>) {
   return (
@@ -47,9 +52,13 @@ export function DataTable<T>({
               <tr>
                 <td
                   colSpan={columns.length}
-                  className='p-4 text-center text-muted-foreground'
+                  className='text-center text-muted-foreground'
                 >
-                  {emptyMessage}
+                  <EmptyState
+                    title={emptyMessage || emptyTitle}
+                    description={emptyDescription}
+                    className='border-0 bg-transparent py-8'
+                  />
                 </td>
               </tr>
             ) : (

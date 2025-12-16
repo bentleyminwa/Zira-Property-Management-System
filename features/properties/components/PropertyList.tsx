@@ -1,3 +1,4 @@
+import { EmptyState } from '@/components/ui/empty-state';
 import { PropertyCard } from '@/features/properties/components/PropertyCard';
 import { prisma } from '@/lib/prisma';
 import { serializeDecimal } from '@/lib/utils';
@@ -44,12 +45,10 @@ export async function PropertyList({
 
   if (properties.length === 0) {
     return (
-      <div className='flex flex-col items-center justify-center py-12 text-center border rounded-lg bg-muted/10'>
-        <h3 className='mt-4 text-lg font-semibold'>No properties found</h3>
-        <p className='text-muted-foreground'>
-          Try adjusting your search or filters.
-        </p>
-      </div>
+      <EmptyState
+        title='No properties found'
+        description='Try adjusting your search or filters.'
+      />
     );
   }
 
