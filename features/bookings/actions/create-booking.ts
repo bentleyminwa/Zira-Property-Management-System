@@ -3,7 +3,6 @@
 import { prisma } from '@/lib/prisma';
 import { BookingStatus, BookingType } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { checkAvailability } from '../utils/check-availability';
 
 export type CreateBookingState = {
@@ -18,60 +17,37 @@ export type CreateBookingState = {
   message?: string;
 };
 
-// TODO: Use a Zod schema for validation in a real app, doing manual generic validation for now to save tokens/time if schema not provided.
-// Actually, I should create a schema. It's better.
+import { BookingFormData, bookingSchema } from '../types/schemas';
 
-import { z } from 'zod';
-
-const createBookingSchema = z.object({
-  propertyId: z.string().min(1, 'Property is required'),
-  tenantId: z.string().min(1, 'Tenant is required'),
-  startDate: z.string().transform((str) => new Date(str)),
-  endDate: z.string().transform((str) => new Date(str)),
-  type: z.nativeEnum(BookingType),
-  totalPrice: z.coerce.number().positive('Total price must be positive'),
-  depositAmount: z.coerce.number().nonnegative().optional(),
-  notes: z.string().optional(),
-});
-
-export async function createBooking(
-  prevState: CreateBookingState,
-  formData: FormData
-): Promise<CreateBookingState> {
-  const validatedFields = createBookingSchema.safeParse({
-    propertyId: formData.get('propertyId'),
-    tenantId: formData.get('tenantId'),
-    startDate: formData.get('startDate'),
-    endDate: formData.get('endDate'),
-    type: formData.get('type'),
-    totalPrice: formData.get('totalPrice'),
-    depositAmount: formData.get('depositAmount'),
-    notes: formData.get('notes'),
-  });
+export async function createBooking(input: BookingFormData) {
+  const validatedFields = bookingSchema.safeParse(input);
 
   if (!validatedFields.success) {
     return {
-      errors: validatedFields.error.flatten().fieldErrors,
+      success: false,
       message: 'Missing Fields. Failed to Create Booking.',
+      errors: validatedFields.error.flatten().fieldErrors,
     };
   }
 
   const {
     propertyId,
     tenantId,
-    startDate,
-    endDate,
+    dateRange,
     type,
     totalPrice,
     depositAmount,
     notes,
   } = validatedFields.data;
 
+  const startDate = dateRange.from;
+  const endDate = dateRange.to;
+
   // 1. Validate Dates
   if (endDate <= startDate) {
     return {
-      errors: { endDate: ['End date must be after start date'] },
-      message: 'Invalid dates.',
+      success: false,
+      message: 'Invalid dates. End date must be after start date.',
     };
   }
 
@@ -79,6 +55,7 @@ export async function createBooking(
   const isAvailable = await checkAvailability(propertyId, startDate, endDate);
   if (!isAvailable) {
     return {
+      success: false,
       message:
         'The property is not available for the selected dates. Please check existing bookings.',
     };
@@ -99,14 +76,19 @@ export async function createBooking(
         status: BookingStatus.CONFIRMED, // Admin created bookings are CONFIRMED by default
       },
     });
+
+    revalidatePath('/dashboard/bookings');
+    revalidatePath(`/dashboard/properties/${propertyId}`);
+
+    return {
+      success: true,
+      message: 'Booking created successfully',
+    };
   } catch (error) {
     console.error('Database Error:', error);
     return {
+      success: false,
       message: 'Database Error: Failed to Create Booking.',
     };
   }
-
-  revalidatePath('/dashboard/bookings');
-  revalidatePath(`/dashboard/properties/${propertyId}`);
-  redirect('/dashboard/bookings');
 }

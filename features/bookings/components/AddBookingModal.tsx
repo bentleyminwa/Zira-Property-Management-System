@@ -28,6 +28,7 @@ export function AddBookingModal() {
     defaultValues: {
       propertyId: '',
       tenantId: '',
+      type: 'SHORT_TERM',
       dateRange: {
         from: undefined,
         to: undefined,
@@ -49,13 +50,7 @@ export function AddBookingModal() {
   async function onSubmit(data: BookingFormData) {
     setLoading(true);
     try {
-      const result = await createBooking({
-        propertyId: data.propertyId,
-        tenantId: data.tenantId,
-        startDate: data.dateRange.from,
-        endDate: data.dateRange.to,
-        totalPrice: data.totalPrice,
-      });
+      const result = await createBooking(data);
 
       if (result.success) {
         toast.success('Booking created successfully');
