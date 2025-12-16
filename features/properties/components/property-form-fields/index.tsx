@@ -1,7 +1,7 @@
 'use client';
 
 import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { PropertyFormData } from '../types/schemas';
+import { PropertyFormData } from '../../types/schemas';
 import { BasicDetails } from './BasicDetails';
 import { PropertyClassification } from './PropertyClassification';
 import { PropertySpecs } from './PropertySpecs';

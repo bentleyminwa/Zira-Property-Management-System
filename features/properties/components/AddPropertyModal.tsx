@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { createProperty } from '../actions';
 import { propertySchema, type PropertyFormData } from '../types/schemas';
-import { PropertyFormFields } from './PropertyFormFields';
+import { PropertyFormFields } from './property-form-fields';
 
 export function AddPropertyModal() {
   const [open, setOpen] = useState(false);

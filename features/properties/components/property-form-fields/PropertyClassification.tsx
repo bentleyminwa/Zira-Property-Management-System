@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { FieldErrors, UseFormSetValue } from 'react-hook-form';
-import { PropertyFormData } from '../types/schemas';
+import { PropertyFormData } from '../../types/schemas';
 
 interface PropertyClassificationProps {
   setValue: UseFormSetValue<PropertyFormData>;
