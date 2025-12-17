@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Users } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -24,26 +25,41 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
     >
       <div className='flex h-full flex-col'>
         {/* Logo and Toggle */}
-        <div className='flex h-16 items-center justify-between px-4 border-b border-border'>
-          {!isCollapsed && (
+        <div
+          className={cn(
+            'flex items-center border-b border-border transition-all',
+            isCollapsed
+              ? 'h-auto flex-col justify-center gap-4 py-4'
+              : 'h-16 justify-between px-4'
+          )}
+        >
+          {!isCollapsed ? (
             <div className='flex items-center gap-2 font-bold text-xl text-primary'>
-              <div className='h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground'>
-                Z
+              <div className='relative h-8 w-8'>
+                <Image
+                  src='/logo.svg'
+                  alt='Zira PMS'
+                  fill
+                  className='object-contain'
+                />
               </div>
               <span>Zira PMS</span>
             </div>
-          )}
-          {isCollapsed && (
-            <div className='h-8 w-8 mx-auto rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold'>
-              Z
+          ) : (
+            <div className='relative h-8 w-8'>
+              <Image
+                src='/logo.svg'
+                alt='Zira PMS'
+                fill
+                className='object-contain'
+              />
             </div>
           )}
 
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className={cn(
-              'rounded-lg p-1.5 hover:bg-accent hover:text-accent-foreground transition-colors',
-              isCollapsed ? 'mx-auto mt-4' : ''
+              'rounded-lg p-1.5 hover:bg-accent hover:text-accent-foreground transition-colors'
             )}
           >
             {isCollapsed ? (
