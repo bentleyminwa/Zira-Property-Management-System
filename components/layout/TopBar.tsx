@@ -1,6 +1,3 @@
-'use client';
-
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,8 +16,9 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { useBreadcrumb } from '@/contexts/BreadcrumbContext';
-import { mockMessages, mockNotifications, mockUser } from '@/lib/mockData';
-import { Bell, Mail, User } from 'lucide-react';
+import { mockMessages, mockNotifications } from '@/lib/mockData';
+import { UserButton } from '@clerk/nextjs';
+import { Bell, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
@@ -47,7 +45,7 @@ export default function TopBar() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href='/'>Dashboard</Link>
+              <Link href='/dashboard'>Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           {breadcrumbItems.length > 0 && <BreadcrumbSeparator />}
@@ -138,57 +136,7 @@ export default function TopBar() {
         </Dialog>
 
         {/* User Profile */}
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
-              <Avatar className='h-8 w-8'>
-                <AvatarImage src={mockUser.avatarUrl} alt={mockUser.name} />
-                <AvatarFallback>{mockUser.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Profile</DialogTitle>
-              <DialogDescription>
-                Manage your account settings.
-              </DialogDescription>
-            </DialogHeader>
-            <div className='space-y-4'>
-              <div className='flex items-center gap-4'>
-                <Avatar className='h-16 w-16'>
-                  <AvatarImage src={mockUser.avatarUrl} alt={mockUser.name} />
-                  <AvatarFallback>{mockUser.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className='font-semibold text-lg'>{mockUser.name}</h3>
-                  <p className='text-muted-foreground'>{mockUser.email}</p>
-                  <span className='inline-block mt-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary'>
-                    {mockUser.role}
-                  </span>
-                </div>
-              </div>
-              {/* Placeholder for profile form */}
-              <div className='grid gap-2'>
-                <label className='text-sm font-medium'>Full Name</label>
-                <input
-                  type='text'
-                  defaultValue={mockUser.name}
-                  className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
-                />
-              </div>
-              <div className='grid gap-2'>
-                <label className='text-sm font-medium'>Email</label>
-                <input
-                  type='email'
-                  defaultValue={mockUser.email}
-                  className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
-                />
-              </div>
-              <Button className='w-full'>Save Changes</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <UserButton afterSignOutUrl='/' />
       </div>
     </header>
   );

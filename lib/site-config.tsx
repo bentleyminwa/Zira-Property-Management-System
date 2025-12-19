@@ -9,11 +9,11 @@ import {
 } from 'lucide-react';
 
 export const sidebarItems = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { name: 'Properties', href: '/properties', icon: Building2 },
-  { name: 'Bookings', href: '/bookings', icon: CalendarDays },
-  { name: 'Tenants', href: '/tenants', icon: Users },
-  { name: 'Maintenance', href: '/maintenance', icon: Wrench },
-  { name: 'Payments', href: '/payments', icon: CreditCard },
-  { name: 'Settings', href: '/settings', icon: Settings },
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Properties', href: '/dashboard/properties', icon: Building2 },
+  { name: 'Bookings', href: '/dashboard/bookings', icon: CalendarDays },
+  { name: 'Tenants', href: '/dashboard/tenants', icon: Users },
+  { name: 'Maintenance', href: '/dashboard/maintenance', icon: Wrench },
+  { name: 'Payments', href: '/dashboard/payments', icon: CreditCard },
+  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
