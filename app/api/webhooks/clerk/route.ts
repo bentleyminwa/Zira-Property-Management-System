@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { WebhookEvent } from '@clerk/nextjs/server';
+import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
 import { headers } from 'next/headers';
 import { Webhook } from 'svix';
 
@@ -55,7 +55,14 @@ export async function POST(req: Request) {
   const eventType = evt.type;
 
   if (eventType === 'user.created') {
-    const { id, email_addresses, image_url, first_name, last_name } = evt.data;
+    const {
+      id,
+      email_addresses,
+      image_url,
+      first_name,
+      last_name,
+      unsafe_metadata,
+    } = evt.data;
 
     if (!id || !email_addresses) {
       console.error('Webhook Error: Missing user data');
@@ -65,21 +72,38 @@ export async function POST(req: Request) {
     }
 
     const email = email_addresses[0].email_address;
-    console.log('Attempting to create user in DB:', { clerkId: id, email });
+    const role = (unsafe_metadata?.role as any) || 'CLIENT';
+
+    console.log('Attempting to create user in DB:', {
+      clerkId: id,
+      email,
+      role,
+    });
 
     try {
+      // 1. Update Database
       await db.user.create({
         data: {
           clerkId: id,
           email,
           name: `${first_name || ''} ${last_name || ''}`.trim(),
           image: image_url,
+          role: role,
         },
       });
       console.log('User created successfully in DB');
+
+      // 2. Update Clerk publicMetadata for JWT access
+      const client = await clerkClient();
+      await client.users.updateUserMetadata(id, {
+        publicMetadata: {
+          role: role,
+        },
+      });
+      console.log('User metadata updated in Clerk');
     } catch (dbError) {
-      console.error('Database Sync Error (user.created):', dbError);
-      return new Response('Database Error', { status: 500 });
+      console.error('Database/Metadata Sync Error (user.created):', dbError);
+      return new Response('Sync Error', { status: 500 });
     }
   }
 

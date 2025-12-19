@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { SignInButton, SignUpButton } from '@clerk/nextjs';
 import Link from 'next/link';
 
 export default function LandingPage() {
@@ -16,15 +15,17 @@ export default function LandingPage() {
       </div>
 
       <div className='flex items-center gap-4'>
-        <SignUpButton mode='modal'>
+        <Link href='/sign-up'>
           <Button size='lg' className='text-lg px-8 h-12'>
             Start Managing Now
           </Button>
-        </SignUpButton>
+        </Link>
 
-        <Button size='lg' variant='outline' className='text-lg px-8 h-12'>
-          View Demo
-        </Button>
+        <Link href='/sign-in'>
+          <Button size='lg' variant='outline' className='text-lg px-8 h-12'>
+            Sign In
+          </Button>
+        </Link>
       </div>
 
       {/* Feature Grid or Image could go here */}

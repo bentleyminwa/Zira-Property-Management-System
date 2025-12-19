@@ -1,14 +1,75 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import {
+  clerkClient,
+  clerkMiddleware,
+  createRouteMatcher,
+} from '@clerk/nextjs/server';
 
 const isPublicRoute = createRouteMatcher([
   '/',
   '/api/webhooks(.*)',
   '/auth(.*)',
+  '/sign-up(.*)',
+  '/sign-in(.*)',
 ]);
+const isAdminRoute = createRouteMatcher(['/dashboard(.*)']);
+const isClientRoute = createRouteMatcher(['/client(.*)']);
 
 export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
+  const { userId, sessionClaims } = await auth();
+
+  // 1. Redirect authenticated users away from landing page
+  if (userId && request.nextUrl.pathname === '/') {
+    const client = await clerkClient();
+    const user = await client.users.getUser(userId);
+    const role =
+      (user.publicMetadata?.role as string) ||
+      (user.unsafeMetadata?.role as string) ||
+      'CLIENT';
+    const redirectUrl = ['ADMIN', 'MANAGER', 'STAFF'].includes(role)
+      ? '/dashboard'
+      : '/client';
+    return Response.redirect(new URL(redirectUrl, request.url));
+  }
+
+  // 2. Allow public routes
+  if (isPublicRoute(request)) {
+    return;
+  }
+
+  // 3. Force authentication for all other routes
+  if (!userId) {
     await auth.protect();
+    return;
+  }
+
+  // 4. RBAC Enforcement
+  const metadata = (sessionClaims?.metadata as any) || {};
+  const publicMetadata = (sessionClaims?.publicMetadata as any) || {};
+  let role =
+    metadata.role ||
+    publicMetadata.role ||
+    (sessionClaims?.unsafeMetadata as any)?.role;
+
+  // Fallback to Backend API if role is not in current JWT
+  if (!role) {
+    try {
+      const client = await clerkClient();
+      const user = await client.users.getUser(userId);
+      role =
+        (user.publicMetadata?.role as string) ||
+        (user.unsafeMetadata?.role as string) ||
+        'CLIENT';
+    } catch (e) {
+      role = 'CLIENT';
+    }
+  }
+
+  if (isAdminRoute(request) && !['ADMIN', 'MANAGER', 'STAFF'].includes(role)) {
+    return Response.redirect(new URL('/client', request.url));
+  }
+
+  if (isClientRoute(request) && role !== 'CLIENT') {
+    return Response.redirect(new URL('/dashboard', request.url));
   }
 });
 

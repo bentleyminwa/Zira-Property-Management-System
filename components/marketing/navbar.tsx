@@ -26,12 +26,12 @@ export const Navbar = () => {
 
       <div className='flex items-center gap-4'>
         <SignedOut>
-          <SignInButton mode='modal'>
+          <Link href='/sign-in'>
             <Button variant='ghost'>Sign In</Button>
-          </SignInButton>
-          <SignUpButton mode='modal'>
+          </Link>
+          <Link href='/sign-up'>
             <Button>Get Started</Button>
-          </SignUpButton>
+          </Link>
         </SignedOut>
         <SignedIn>
           <Link href='/dashboard'>
