@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
+import { SignInButton, SignUpButton } from '@clerk/nextjs';
 import Link from 'next/link';
 
 export default function LandingPage() {
   return (
     <div className='flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4 text-center space-y-8'>
       <div className='space-y-4 max-w-3xl'>
-        <h1 className='text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent'>
+        <h1 className='text-4xl md:text-6xl font-bold bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent'>
           Modern Property Management Simplified
         </h1>
         <p className='text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto'>
@@ -15,16 +16,15 @@ export default function LandingPage() {
       </div>
 
       <div className='flex items-center gap-4'>
-        <Link href='/auth/signup'>
+        <SignUpButton mode='modal'>
           <Button size='lg' className='text-lg px-8 h-12'>
             Start Managing Now
           </Button>
-        </Link>
-        <Link href='/auth/signin'>
-          <Button size='lg' variant='outline' className='text-lg px-8 h-12'>
-            View Demo
-          </Button>
-        </Link>
+        </SignUpButton>
+
+        <Button size='lg' variant='outline' className='text-lg px-8 h-12'>
+          View Demo
+        </Button>
       </div>
 
       {/* Feature Grid or Image could go here */}

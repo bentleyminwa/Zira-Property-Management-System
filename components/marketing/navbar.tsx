@@ -1,5 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -23,15 +29,15 @@ export const Navbar = () => {
           <SignInButton mode='modal'>
             <Button variant='ghost'>Sign In</Button>
           </SignInButton>
-          <Link href='/auth/signup'>
+          <SignUpButton mode='modal'>
             <Button>Get Started</Button>
-          </Link>
+          </SignUpButton>
         </SignedOut>
         <SignedIn>
           <Link href='/dashboard'>
             <Button variant='ghost'>Dashboard</Button>
           </Link>
-          <UserButton afterSignOutUrl='/' />
+          <UserButton />
         </SignedIn>
       </div>
     </nav>

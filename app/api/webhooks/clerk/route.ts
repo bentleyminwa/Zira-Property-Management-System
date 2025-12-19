@@ -29,6 +29,8 @@ export async function POST(req: Request) {
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
+  console.log('Webhook Received:', { payload });
+
   // Create a new Svix instance with your secret.
   const wh = new Webhook(WEBHOOK_SECRET);
 
@@ -41,6 +43,7 @@ export async function POST(req: Request) {
       'svix-timestamp': svix_timestamp,
       'svix-signature': svix_signature,
     }) as WebhookEvent;
+    console.log('Webhook Verified:', { eventType: evt.type });
   } catch (err) {
     console.error('Error verifying webhook:', err);
     return new Response('Error occured', {
@@ -55,61 +58,86 @@ export async function POST(req: Request) {
     const { id, email_addresses, image_url, first_name, last_name } = evt.data;
 
     if (!id || !email_addresses) {
+      console.error('Webhook Error: Missing user data');
       return new Response('Error occured -- missing data', {
         status: 400,
       });
     }
 
     const email = email_addresses[0].email_address;
+    console.log('Attempting to create user in DB:', { clerkId: id, email });
 
-    await db.user.create({
-      data: {
-        clerkId: id,
-        email,
-        name: `${first_name || ''} ${last_name || ''}`.trim(),
-        image: image_url,
-      },
-    });
+    try {
+      await db.user.create({
+        data: {
+          clerkId: id,
+          email,
+          name: `${first_name || ''} ${last_name || ''}`.trim(),
+          image: image_url,
+        },
+      });
+      console.log('User created successfully in DB');
+    } catch (dbError) {
+      console.error('Database Sync Error (user.created):', dbError);
+      return new Response('Database Error', { status: 500 });
+    }
   }
 
   if (eventType === 'user.updated') {
     const { id, email_addresses, image_url, first_name, last_name } = evt.data;
 
     if (!id || !email_addresses) {
+      console.error('Webhook Error: Missing user data');
       return new Response('Error occured -- missing data', {
         status: 400,
       });
     }
 
     const email = email_addresses[0].email_address;
+    console.log('Attempting to update user in DB:', { clerkId: id, email });
 
-    await db.user.update({
-      where: {
-        clerkId: id,
-      },
-      data: {
-        email,
-        name: `${first_name || ''} ${last_name || ''}`.trim(),
-        image: image_url,
-      },
-    });
+    try {
+      await db.user.update({
+        where: {
+          clerkId: id,
+        },
+        data: {
+          email,
+          name: `${first_name || ''} ${last_name || ''}`.trim(),
+          image: image_url,
+        },
+      });
+      console.log('User updated successfully in DB');
+    } catch (dbError) {
+      console.error('Database Sync Error (user.updated):', dbError);
+      return new Response('Database Error', { status: 500 });
+    }
   }
 
   if (eventType === 'user.deleted') {
     const { id } = evt.data;
 
     if (!id) {
+      console.error('Webhook Error: Missing user ID');
       return new Response('Error occured -- missing data', {
         status: 400,
       });
     }
 
-    await db.user.delete({
-      where: {
-        clerkId: id,
-      },
-    });
+    console.log('Attempting to delete user from DB:', { clerkId: id });
+
+    try {
+      await db.user.delete({
+        where: {
+          clerkId: id,
+        },
+      });
+      console.log('User deleted successfully from DB');
+    } catch (dbError) {
+      console.error('Database Sync Error (user.deleted):', dbError);
+      return new Response('Database Error', { status: 500 });
+    }
   }
 
-  return new Response('', { status: 200 });
+  return new Response('Success', { status: 200 });
 }
