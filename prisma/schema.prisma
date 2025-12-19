@@ -12,6 +12,12 @@ enum Role {
   MANAGER
   STAFF
   CLIENT
+  AGENT
+}
+
+enum ListingType {
+  BUY
+  RENT
 }
 
 enum PropertyStatus {
@@ -85,6 +91,8 @@ model User {
   role      Role     @default(CLIENT)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  agentProperties Property[] @relation("AgentProperties")
 }
 
 model Property {
@@ -100,8 +108,12 @@ model Property {
   bathrooms   Int?
   features    String[] // Array of strings for features like "Pool", "Gym"
   image       String?
+  listingType ListingType    @default(RENT)
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
+
+  agentId String?
+  agent   User?   @relation("AgentProperties", fields: [agentId], references: [id])
 
   bookings    Booking[]
   maintenance Maintenance[]

@@ -48,7 +48,7 @@ export async function deleteProperty(id: string) {
     });
 
     // Revalidate the properties list page
-    revalidatePath('/properties');
+    revalidatePath('/dashboard/properties');
 
     return {
       success: true,

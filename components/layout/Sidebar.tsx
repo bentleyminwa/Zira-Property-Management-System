@@ -1,7 +1,8 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight, Users } from 'lucide-react';
+import { UserButton } from '@clerk/nextjs';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -94,27 +95,18 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
           })}
         </nav>
 
-        {/* User Profile (Optional Placeholder) */}
-        <div className='border-t border-border p-4'>
-          {!isCollapsed ? (
-            <div className='flex items-center gap-3'>
-              <div className='h-9 w-9 rounded-full bg-muted flex items-center justify-center'>
-                <Users size={20} />
-              </div>
-              <div className='flex flex-col'>
-                <span className='text-sm font-medium'>Admin User</span>
-                <span className='text-xs text-muted-foreground'>
-                  admin@zira.com
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className='flex justify-center'>
-              <div className='h-9 w-9 rounded-full bg-muted flex items-center justify-center'>
-                <Users size={20} />
-              </div>
-            </div>
-          )}
+        {/* User Profile */}
+        <div className='border-t border-border p-4 flex items-center justify-center'>
+          <UserButton
+            showName={!isCollapsed}
+            appearance={{
+              elements: {
+                userButtonBox: isCollapsed
+                  ? 'justify-center'
+                  : 'flex-row-reverse',
+              },
+            }}
+          />
         </div>
       </div>
     </aside>

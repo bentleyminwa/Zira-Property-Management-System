@@ -36,8 +36,8 @@ export async function updateProperty(id: string, formData: FormData) {
       },
     });
 
-    revalidatePath('/properties');
-    revalidatePath(`/properties/${id}`);
+    revalidatePath('/dashboard/properties');
+    revalidatePath(`/dashboard/properties/${id}`);
 
     return {
       success: true,

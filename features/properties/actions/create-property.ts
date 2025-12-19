@@ -35,7 +35,7 @@ export async function createProperty(formData: FormData) {
       },
     });
 
-    revalidatePath('/properties');
+    revalidatePath('/dashboard/properties');
 
     return {
       success: true,
