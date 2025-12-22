@@ -1,4 +1,4 @@
-import { PropertyStatus, PropertyType } from '@prisma/client';
+import { ListingType, PropertyStatus, PropertyType } from '@prisma/client';
 import { z } from 'zod';
 
 export const propertySchema = z.object({
@@ -23,6 +23,10 @@ export const propertySchema = z.object({
 
   status: z.enum(PropertyStatus, {
     message: 'Invalid property status',
+  }),
+
+  listingType: z.enum(ListingType, {
+    message: 'Invalid listing type',
   }),
 
   description: z

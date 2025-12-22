@@ -15,6 +15,7 @@ interface PropertyClassificationProps {
   errors: FieldErrors<PropertyFormData>;
   defaultType?: string;
   defaultStatus?: string;
+  defaultListingType?: string;
 }
 
 export function PropertyClassification({
@@ -22,6 +23,7 @@ export function PropertyClassification({
   errors,
   defaultType,
   defaultStatus,
+  defaultListingType,
 }: PropertyClassificationProps) {
   return (
     <>
@@ -71,6 +73,34 @@ export function PropertyClassification({
             </SelectContent>
           </Select>
           <FormError message={errors.status?.message} />
+        </div>
+      </div>
+
+      {/* Listing Type Field */}
+      <div className='grid grid-cols-4 items-start gap-4'>
+        <Label htmlFor='listingType' className='text-right pt-2'>
+          Listing Type <span className='text-destructive'>*</span>
+        </Label>
+        <div className='col-span-3'>
+          <Select
+            defaultValue={defaultListingType || 'RENT'}
+            onValueChange={(value) => setValue('listingType', value as any)}
+          >
+            <SelectTrigger
+              className={errors.listingType ? 'border-destructive' : ''}
+            >
+              <SelectValue placeholder='Select listing type' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='BUY'>For Sale</SelectItem>
+              <SelectItem value='RENT'>For Rent</SelectItem>
+            </SelectContent>
+          </Select>
+          <FormError message={errors.listingType?.message} />
+          <p className='text-xs text-muted-foreground mt-1'>
+            For rent properties: booking type (short-term/long-term) is set when
+            creating bookings
+          </p>
         </div>
       </div>
     </>

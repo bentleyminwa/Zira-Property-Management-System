@@ -11,8 +11,8 @@ enum Role {
   ADMIN
   MANAGER
   STAFF
-  CLIENT
   AGENT
+  CLIENT
 }
 
 enum ListingType {
