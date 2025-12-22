@@ -11,16 +11,16 @@ import {
   ArrowLeft,
   Bath,
   BedDouble,
-  CalendarDays,
   Home,
   MapPin,
   Maximize,
-  Wrench,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { DeletePropertyDialog } from './DeletePropertyDialog';
 import { EditPropertyModal } from './EditPropertyModal';
+import { PropertyBookingsTab } from './PropertyBookingsTab';
+import { PropertyMaintenanceTab } from './PropertyMaintenanceTab';
 // import Image from 'next/image';
 
 interface PropertyDetailsProps {
@@ -115,50 +115,48 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
         <div className='md:col-span-2 space-y-6'>
           {/* Key Features Grid */}
           <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
-            <Card>
-              <CardContent className='flex flex-col items-center justify-center p-6 text-center'>
-                <Home className='mb-2 h-6 w-6 text-muted-foreground' />
-                <span className='text-sm font-medium text-muted-foreground'>
-                  Type
-                </span>
-                <span className='font-semibold capitalize'>
-                  {property.type.toLowerCase()}
-                </span>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className='flex flex-col items-center justify-center p-6 text-center'>
-                <Maximize className='mb-2 h-6 w-6 text-muted-foreground' />
-                <span className='text-sm font-medium text-muted-foreground'>
-                  Size
-                </span>
-                <span className='font-semibold'>
-                  {property.size ? `${property.size} sq ft` : '-'}
-                </span>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className='flex flex-col items-center justify-center p-6 text-center'>
-                <BedDouble className='mb-2 h-6 w-6 text-muted-foreground' />
-                <span className='text-sm font-medium text-muted-foreground'>
-                  Bedrooms
-                </span>
-                <span className='font-semibold'>
-                  {property.bedrooms ?? '-'}
-                </span>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className='flex flex-col items-center justify-center p-6 text-center'>
-                <Bath className='mb-2 h-6 w-6 text-muted-foreground' />
-                <span className='text-sm font-medium text-muted-foreground'>
-                  Bathrooms
-                </span>
-                <span className='font-semibold'>
-                  {property.bathrooms ?? '-'}
-                </span>
-              </CardContent>
-            </Card>
+            {[
+              {
+                icon: Home,
+                label: 'Type',
+                value: property.type.toLowerCase(),
+                capitalize: true,
+              },
+              {
+                icon: Maximize,
+                label: 'Size',
+                value: property.size ? `${property.size} sq ft` : '-',
+              },
+              {
+                icon: BedDouble,
+                label: 'Bedrooms',
+                value: property.bedrooms ?? '-',
+              },
+              {
+                icon: Bath,
+                label: 'Bathrooms',
+                value: property.bathrooms ?? '-',
+              },
+            ].map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <Card key={index}>
+                  <CardContent className='flex flex-col items-center justify-center p-6 text-center'>
+                    <Icon className='mb-2 h-6 w-6 text-muted-foreground' />
+                    <span className='text-sm font-medium text-muted-foreground'>
+                      {feature.label}
+                    </span>
+                    <span
+                      className={`font-semibold ${
+                        feature.capitalize ? 'capitalize' : ''
+                      }`}
+                    >
+                      {feature.value}
+                    </span>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
 
           {/* Description */}
@@ -182,79 +180,10 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
               </TabsTrigger>
             </TabsList>
             <TabsContent value='bookings' className='mt-4'>
-              <Card>
-                <CardHeader>
-                  <CardTitle className='flex items-center gap-2'>
-                    <CalendarDays className='h-5 w-5' />
-                    Recent Bookings
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {property.bookings.length === 0 ? (
-                    <p className='text-sm text-muted-foreground'>
-                      No bookings found.
-                    </p>
-                  ) : (
-                    <div className='space-y-4'>
-                      {property.bookings.map((booking) => (
-                        <div
-                          key={booking.id}
-                          className='flex items-center justify-between border-b pb-4 last:border-0 last:pb-0'
-                        >
-                          <div>
-                            <p className='font-medium'>
-                              {formatDate(booking.startDate)} -{' '}
-                              {formatDate(booking.endDate)}
-                            </p>
-                            <p className='text-sm text-muted-foreground'>
-                              {booking.status}
-                            </p>
-                          </div>
-                          <div className='font-semibold'>
-                            {formatCurrency(Number(booking.totalPrice))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <PropertyBookingsTab bookings={property.bookings} />
             </TabsContent>
             <TabsContent value='maintenance' className='mt-4'>
-              <Card>
-                <CardHeader>
-                  <CardTitle className='flex items-center gap-2'>
-                    <Wrench className='h-5 w-5' />
-                    Maintenance History
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {property.maintenance.length === 0 ? (
-                    <p className='text-sm text-muted-foreground'>
-                      No maintenance requests found.
-                    </p>
-                  ) : (
-                    <div className='space-y-4'>
-                      {property.maintenance.map((request) => (
-                        <div
-                          key={request.id}
-                          className='flex items-center justify-between border-b pb-4 last:border-0 last:pb-0'
-                        >
-                          <div>
-                            <p className='font-medium'>{request.title}</p>
-                            <p className='text-sm text-muted-foreground'>
-                              {request.status} • {request.priority} Priority
-                            </p>
-                          </div>
-                          <div className='text-sm text-muted-foreground'>
-                            {formatDate(request.createdAt)}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <PropertyMaintenanceTab maintenance={property.maintenance} />
             </TabsContent>
           </Tabs>
         </div>

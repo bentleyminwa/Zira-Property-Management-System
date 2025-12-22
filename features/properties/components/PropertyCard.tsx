@@ -73,18 +73,33 @@ export function PropertyCard({ property }: PropertyCardProps) {
         </div>
 
         <div className='flex items-center justify-between text-sm text-muted-foreground'>
-          <div className='flex items-center gap-1'>
-            <Bed className='h-4 w-4' />
-            <span>{property.bedrooms || '-'} Beds</span>
-          </div>
-          <div className='flex items-center gap-1'>
-            <Bath className='h-4 w-4' />
-            <span>{property.bathrooms || '-'} Baths</span>
-          </div>
-          <div className='flex items-center gap-1'>
-            <Ruler className='h-4 w-4' />
-            <span>{property.size ? `${property.size} sqft` : '-'}</span>
-          </div>
+          {[
+            {
+              icon: Bed,
+              value: property.bedrooms || '-',
+              label: 'Beds',
+            },
+            {
+              icon: Bath,
+              value: property.bathrooms || '-',
+              label: 'Baths',
+            },
+            {
+              icon: Ruler,
+              value: property.size ? `${property.size}` : '-',
+              label: 'sqft',
+            },
+          ].map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <div key={index} className='flex items-center gap-1'>
+                <Icon className='h-4 w-4' />
+                <span>
+                  {stat.value} {stat.label}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </CardContent>
     </Card>

@@ -1,7 +1,15 @@
 import { KPICard } from '@/components/ui/KPICard';
 import { prisma } from '@/lib/prisma';
 import { formatCurrency } from '@/lib/utils';
+import type { LucideIcon } from 'lucide-react';
 import { CalendarDays, DollarSign, Home, Wrench } from 'lucide-react';
+
+interface KPIStat {
+  title: string;
+  value: string | number;
+  icon: LucideIcon;
+  description: string;
+}
 
 export async function DashboardStats() {
   const [properties, bookings, maintenance, payments] = await Promise.all([
@@ -30,32 +38,44 @@ export async function DashboardStats() {
     ['OPEN', 'IN_PROGRESS'].includes(m.status)
   ).length;
 
+  const stats: KPIStat[] = [
+    {
+      title: 'Total Revenue',
+      value: formatCurrency(totalRevenue),
+      icon: DollarSign,
+      description: 'Total earnings',
+    },
+    {
+      title: 'Occupancy Rate',
+      value: `${occupancyRate.toFixed(1)}%`,
+      icon: Home,
+      description: `${rentedProperties} of ${totalProperties} properties rented`,
+    },
+    {
+      title: 'Active Bookings',
+      value: activeBookings,
+      icon: CalendarDays,
+      description: 'Confirmed bookings',
+    },
+    {
+      title: 'Open Maintenance',
+      value: openMaintenance,
+      icon: Wrench,
+      description: 'Active requests',
+    },
+  ];
+
   return (
     <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
-      <KPICard
-        title='Total Revenue'
-        value={formatCurrency(totalRevenue)}
-        icon={DollarSign}
-        description='Total earnings'
-      />
-      <KPICard
-        title='Occupancy Rate'
-        value={`${occupancyRate.toFixed(1)}%`}
-        icon={Home}
-        description={`${rentedProperties} of ${totalProperties} properties rented`}
-      />
-      <KPICard
-        title='Active Bookings'
-        value={activeBookings}
-        icon={CalendarDays}
-        description='Confirmed bookings'
-      />
-      <KPICard
-        title='Open Maintenance'
-        value={openMaintenance}
-        icon={Wrench}
-        description='Active requests'
-      />
+      {stats.map((stat, index) => (
+        <KPICard
+          key={index}
+          title={stat.title}
+          value={stat.value}
+          icon={stat.icon}
+          description={stat.description}
+        />
+      ))}
     </div>
   );
 }

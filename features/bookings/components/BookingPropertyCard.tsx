@@ -56,38 +56,55 @@ export function BookingPropertyCard({ property }: BookingPropertyCardProps) {
 
           {/* Property Features */}
           <div className='grid grid-cols-3 gap-4 pt-2'>
-            <div className='flex flex-col items-center rounded-lg border p-3'>
-              <Home className='mb-1 h-5 w-5 text-muted-foreground' />
-              <span className='text-xs text-muted-foreground'>Type</span>
-              <span className='text-sm font-medium capitalize'>
-                {property.type.toLowerCase()}
-              </span>
-            </div>
-            {property.bedrooms && (
-              <div className='flex flex-col items-center rounded-lg border p-3'>
-                <BedDouble className='mb-1 h-5 w-5 text-muted-foreground' />
-                <span className='text-xs text-muted-foreground'>Bedrooms</span>
-                <span className='text-sm font-medium'>{property.bedrooms}</span>
-              </div>
-            )}
-            {property.bathrooms && (
-              <div className='flex flex-col items-center rounded-lg border p-3'>
-                <Bath className='mb-1 h-5 w-5 text-muted-foreground' />
-                <span className='text-xs text-muted-foreground'>Bathrooms</span>
-                <span className='text-sm font-medium'>
-                  {property.bathrooms}
-                </span>
-              </div>
-            )}
-            {property.size && (
-              <div className='flex flex-col items-center rounded-lg border p-3'>
-                <Maximize className='mb-1 h-5 w-5 text-muted-foreground' />
-                <span className='text-xs text-muted-foreground'>Size</span>
-                <span className='text-sm font-medium'>
-                  {property.size} sq ft
-                </span>
-              </div>
-            )}
+            {[
+              {
+                icon: Home,
+                label: 'Type',
+                value: property.type.toLowerCase(),
+                capitalize: true,
+                show: true,
+              },
+              {
+                icon: BedDouble,
+                label: 'Bedrooms',
+                value: property.bedrooms,
+                show: !!property.bedrooms,
+              },
+              {
+                icon: Bath,
+                label: 'Bathrooms',
+                value: property.bathrooms,
+                show: !!property.bathrooms,
+              },
+              {
+                icon: Maximize,
+                label: 'Size',
+                value: property.size ? `${property.size} sq ft` : null,
+                show: !!property.size,
+              },
+            ]
+              .filter((feature) => feature.show)
+              .map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div
+                    key={index}
+                    className='flex flex-col items-center rounded-lg border p-3'
+                  >
+                    <Icon className='mb-1 h-5 w-5 text-muted-foreground' />
+                    <span className='text-xs text-muted-foreground'>
+                      {feature.label}
+                    </span>
+                    <span
+                      className={`text-sm font-medium ${
+                        feature.capitalize ? 'capitalize' : ''
+                      }`}
+                    >
+                      {feature.value}
+                    </span>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </CardContent>
