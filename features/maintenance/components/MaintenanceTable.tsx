@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { maintenanceDetailsPath } from '@/paths';
 import { Maintenance, Property } from '@prisma/client';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
@@ -73,7 +74,7 @@ export function MaintenanceTable({
       cell: (item) => (
         <DataTableRowActions>
           <DropdownMenuItem
-            onClick={() => router.push(`/maintenance/${item.id}`)}
+            onClick={() => router.push(maintenanceDetailsPath(item.id))}
           >
             View details
           </DropdownMenuItem>

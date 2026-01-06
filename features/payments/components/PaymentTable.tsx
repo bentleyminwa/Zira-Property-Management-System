@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { formatCurrency } from '@/lib/utils';
+import { paymentDetailsPath } from '@/paths';
 import { Booking, Payment, Property, Tenant } from '@prisma/client';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
@@ -125,7 +126,7 @@ export function PaymentTable({ payments }: PaymentTableProps) {
       cell: (payment) => (
         <DataTableRowActions>
           <DropdownMenuItem
-            onClick={() => router.push(`/payments/${payment.id}`)}
+            onClick={() => router.push(paymentDetailsPath(payment.id))}
           >
             View details
           </DropdownMenuItem>

@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { formatCurrency, formatDate } from '@/lib/utils';
+import { bookingDetailsPath } from '@/paths';
 import { Booking, Property, Tenant } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
@@ -114,7 +115,7 @@ export function BookingTable({ bookings }: BookingTableProps) {
       cell: (booking) => (
         <DataTableRowActions>
           <DropdownMenuItem
-            onClick={() => router.push(`/bookings/${booking.id}`)}
+            onClick={() => router.push(bookingDetailsPath(booking.id))}
           >
             View details
           </DropdownMenuItem>

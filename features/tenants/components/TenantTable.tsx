@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { tenantDetailsPath } from '@/paths';
 import { Tenant } from '@prisma/client';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
@@ -60,7 +61,7 @@ export function TenantTable({ tenants }: TenantTableProps) {
       cell: (tenant) => (
         <DataTableRowActions>
           <DropdownMenuItem
-            onClick={() => router.push(`/tenants/${tenant.id}`)}
+            onClick={() => router.push(tenantDetailsPath(tenant.id))}
           >
             View details
           </DropdownMenuItem>

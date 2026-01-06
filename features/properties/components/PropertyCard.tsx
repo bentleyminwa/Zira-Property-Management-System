@@ -7,6 +7,7 @@ import { formatCurrency } from '@/lib/utils';
 import { Property } from '@prisma/client';
 import { Bath, Bed, Eye, MapPin, Pencil, Ruler } from 'lucide-react';
 // import Image from 'next/image'; --> I'll have to figure out how to use it without it giving me trouble🤯
+import { propertyDetailsPath } from '@/paths';
 import Link from 'next/link';
 import { EditPropertyModal } from './EditPropertyModal';
 
@@ -26,7 +27,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
         <div className='absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
 
         <div className='absolute inset-0 flex items-center justify-center gap-2 opacity-0 transition-all duration-300 group-hover:opacity-100'>
-          <Link href={`/dashboard/properties/${property.id}`}>
+          <Link href={propertyDetailsPath(property.id)}>
             <Button variant='secondary' size='sm' className='gap-2'>
               <Eye className='h-4 w-4' />
               View

@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
+import { bookingDetailsPath } from '@/paths';
 import { Booking, Payment, Property } from '@prisma/client';
 import { format } from 'date-fns';
 import { CreditCard, ExternalLink } from 'lucide-react';
@@ -95,7 +96,7 @@ export function TenantPaymentHistory({ payments }: TenantPaymentHistoryProps) {
                     <div className='flex items-center gap-1'>
                       For booking:
                       <Link
-                        href={`/bookings/${payment.bookingId}`}
+                        href={bookingDetailsPath(payment.bookingId)}
                         className='flex items-center gap-1 font-medium text-foreground hover:underline'
                       >
                         {payment.booking.property.name}
