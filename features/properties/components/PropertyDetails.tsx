@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -49,6 +51,8 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
     clearBreadcrumbOverride,
   ]);
 
+  const [imgError, setImgError] = useState(false);
+
   return (
     <div className='space-y-6'>
       <Button
@@ -92,16 +96,25 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
 
       {/* Hero Image */}
       <div className='relative aspect-video w-full overflow-hidden rounded-xl border bg-muted'>
-        {property.image ? (
+        {property.image && !imgError ? (
           <Image
             src={property.image}
             alt={property.name}
             fill
             className='object-cover'
+            onError={() => setImgError(true)}
+            unoptimized={true}
           />
         ) : (
-          <div className='flex h-full items-center justify-center text-muted-foreground'>
-            <Home className='h-20 w-20 opacity-20' />
+          <div className='flex h-full items-center justify-center text-muted-foreground bg-muted'>
+            <Image
+              src='/placeholder-property.jpg'
+              alt='Placeholder'
+              fill
+              className='object-cover opacity-40'
+              unoptimized={true}
+            />
+            <Home className='h-20 w-20 opacity-20 relative z-10' />
           </div>
         )}
         <div className='absolute bottom-4 right-4 rounded-lg bg-background/90 px-4 py-2 font-semibold shadow-sm backdrop-blur-sm'>

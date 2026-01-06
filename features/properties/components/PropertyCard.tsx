@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,14 +18,22 @@ interface PropertyCardProps {
 }
 
 export function PropertyCard({ property }: PropertyCardProps) {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <Card className='group relative overflow-hidden transition-all hover:shadow-lg'>
       <div className='relative aspect-4/3 overflow-hidden'>
         <Image
-          src={property.image || '/placeholder-property.jpg'}
+          src={
+            imgError || !property.image
+              ? '/placeholder-property.jpg'
+              : property.image
+          }
           alt={property.name}
           fill
           className='object-cover transition-transform duration-300 group-hover:scale-105'
+          onError={() => setImgError(true)}
+          unoptimized={true}
         />
         <div className='absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
 
