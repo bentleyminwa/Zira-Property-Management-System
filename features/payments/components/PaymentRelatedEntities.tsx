@@ -1,5 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  bookingDetailsPath,
+  propertyDetailsPath,
+  tenantDetailsPath,
+} from '@/paths';
 import { Booking, Property, Tenant } from '@prisma/client';
 import { format } from 'date-fns';
 import { Building2, ExternalLink, LinkIcon, User } from 'lucide-react';
@@ -40,7 +45,7 @@ export function PaymentRelatedEntities({
             </Avatar>
             <div className='flex flex-col'>
               <Link
-                href={`/tenants/${tenant.id}`}
+                href={tenantDetailsPath(tenant.id)}
                 className='font-semibold hover:underline flex items-center gap-1'
               >
                 {tenant.firstName} {tenant.lastName}
@@ -80,13 +85,13 @@ export function PaymentRelatedEntities({
 
             <div className='flex flex-col justify-center text-sm'>
               <Link
-                href={`/properties/${booking.propertyId}`}
+                href={propertyDetailsPath(booking.property.id)}
                 className='font-medium hover:underline'
               >
                 {booking.property.name}
               </Link>
               <Link
-                href={`/bookings/${booking.id}`}
+                href={bookingDetailsPath(booking.id)}
                 className='text-muted-foreground hover:text-primary flex items-center gap-1 text-xs mt-1'
               >
                 View Booking #{booking.id.slice(-6)}
