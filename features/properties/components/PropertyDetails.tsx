@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useBreadcrumb } from '@/contexts/BreadcrumbContext';
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils';
 import { Booking, Maintenance, Property } from '@prisma/client';
 import {
   ArrowLeft,
@@ -15,13 +15,13 @@ import {
   MapPin,
   Maximize,
 } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { DeletePropertyDialog } from './DeletePropertyDialog';
 import { EditPropertyModal } from './EditPropertyModal';
 import { PropertyBookingsTab } from './PropertyBookingsTab';
 import { PropertyMaintenanceTab } from './PropertyMaintenanceTab';
-// import Image from 'next/image';
 
 interface PropertyDetailsProps {
   property: Property & {
@@ -93,9 +93,10 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
       {/* Hero Image */}
       <div className='relative aspect-video w-full overflow-hidden rounded-xl border bg-muted'>
         {property.image ? (
-          <img
+          <Image
             src={property.image}
             alt={property.name}
+            fill
             className='object-cover'
           />
         ) : (

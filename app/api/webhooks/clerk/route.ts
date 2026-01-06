@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { db } from '@/lib/db';
 import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
+import { Role } from '@prisma/client';
 import { headers } from 'next/headers';
 import { Webhook } from 'svix';
 
@@ -54,7 +55,6 @@ export async function POST(req: Request) {
     });
   }
 
-  const { id } = evt.data;
   const eventType = evt.type;
 
   if (eventType === 'user.created') {
@@ -75,7 +75,7 @@ export async function POST(req: Request) {
     }
 
     const email = email_addresses[0].email_address;
-    const role = (unsafe_metadata?.role as any) || 'CLIENT';
+    const role = (unsafe_metadata?.role as Role) || 'CLIENT';
 
     console.log('Attempting to create user in DB:', {
       clerkId: id,

@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { Payment } from '@prisma/client';
 import { format } from 'date-fns';
-import { CreditCard, Receipt } from 'lucide-react';
+import { Receipt } from 'lucide-react';
 
 interface PaymentInfoProps {
   payment: Payment;

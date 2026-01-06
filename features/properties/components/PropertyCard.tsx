@@ -4,10 +4,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
+import { propertyDetailsPath } from '@/paths';
 import { Property } from '@prisma/client';
 import { Bath, Bed, Eye, MapPin, Pencil, Ruler } from 'lucide-react';
-// import Image from 'next/image'; --> I'll have to figure out how to use it without it giving me trouble🤯
-import { propertyDetailsPath } from '@/paths';
+import Image from 'next/image';
 import Link from 'next/link';
 import { EditPropertyModal } from './EditPropertyModal';
 
@@ -19,9 +19,10 @@ export function PropertyCard({ property }: PropertyCardProps) {
   return (
     <Card className='group relative overflow-hidden transition-all hover:shadow-lg'>
       <div className='relative aspect-4/3 overflow-hidden'>
-        <img
+        <Image
           src={property.image || '/placeholder-property.jpg'}
           alt={property.name}
+          fill
           className='object-cover transition-transform duration-300 group-hover:scale-105'
         />
         <div className='absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />

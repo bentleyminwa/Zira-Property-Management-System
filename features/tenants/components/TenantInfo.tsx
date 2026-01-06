@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tenant } from '@prisma/client';
 import { format } from 'date-fns';
-import { Calendar, Mail, MapPin, Phone, User } from 'lucide-react';
+import { Calendar, Mail, Phone, User } from 'lucide-react';
 
 interface TenantInfoProps {
   tenant: Tenant;

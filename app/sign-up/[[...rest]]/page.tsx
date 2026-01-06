@@ -3,18 +3,16 @@
 import { Button } from '@/components/ui/button';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { SignUp, useSignUp } from '@clerk/nextjs';
+import { SignUp } from '@clerk/nextjs';
 import { Building2, User } from 'lucide-react';
 import { useState } from 'react';
 
 export default function SignUpPage() {
   const [role, setRole] = useState<'CLIENT' | 'ADMIN' | null>(null);
-  const { isLoaded, signUp } = useSignUp();
 
   if (role === null) {
     return (

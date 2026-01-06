@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/Modal';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Booking } from '@prisma/client';
+import { Booking, BookingType } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -56,7 +56,7 @@ export function EditBookingModal({
         from: new Date(booking.startDate),
         to: new Date(booking.endDate),
       },
-      type: booking.type as any, // Cast to any or matching enum
+      type: booking.type as BookingType,
       totalPrice: Number(booking.totalPrice),
       depositAmount: booking.depositAmount
         ? Number(booking.depositAmount)
@@ -78,7 +78,7 @@ export function EditBookingModal({
           from: new Date(booking.startDate),
           to: new Date(booking.endDate),
         },
-        type: booking.type as any,
+        type: booking.type as BookingType,
         totalPrice: Number(booking.totalPrice),
         depositAmount: booking.depositAmount
           ? Number(booking.depositAmount)
@@ -147,7 +147,7 @@ export function EditBookingModal({
           defaultValues={{
             propertyId: booking.propertyId,
             tenantId: booking.tenantId,
-            type: booking.type as any,
+            type: booking.type as BookingType,
           }}
         />
       </form>

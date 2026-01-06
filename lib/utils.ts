@@ -24,7 +24,7 @@ export function formatDate(date: Date | string | number) {
  * Serializes Prisma Decimal objects to numbers recursively.
  * Also handles Date objects by converting to ISO string to ensure serializability.
  */
-export function serializeDecimal(obj: any): any {
+export function serializeDecimal(obj: unknown): unknown {
   if (obj === null || obj === undefined) {
     return obj;
   }
@@ -39,18 +39,22 @@ export function serializeDecimal(obj: any): any {
   }
 
   // Handle Prisma Decimal objects (duck typing)
-  if (typeof obj.toNumber === 'function') {
-    return obj.toNumber();
+  if (
+    'toNumber' in obj &&
+    typeof (obj as { toNumber: unknown }).toNumber === 'function'
+  ) {
+    return (obj as { toNumber: () => unknown }).toNumber();
   }
 
   if (Array.isArray(obj)) {
     return obj.map((item) => serializeDecimal(item));
   }
 
-  const newObj: any = {};
-  for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      const value = obj[key];
+  const newObj: Record<string, unknown> = {};
+  const record = obj as Record<string, unknown>;
+  for (const key in record) {
+    if (Object.prototype.hasOwnProperty.call(record, key)) {
+      const value = record[key];
       if (typeof value === 'function') {
         continue;
       }

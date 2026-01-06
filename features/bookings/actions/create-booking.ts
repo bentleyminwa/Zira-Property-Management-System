@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { BookingStatus, BookingType } from '@prisma/client';
+import { BookingStatus } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { checkAvailability } from '../utils/check-availability';
 
@@ -42,6 +42,13 @@ export async function createBooking(input: BookingFormData) {
 
   const startDate = dateRange.from;
   const endDate = dateRange.to;
+
+  if (!startDate || !endDate) {
+    return {
+      success: false,
+      message: 'Please select both start and end dates.',
+    };
+  }
 
   // 1. Validate Dates
   if (endDate <= startDate) {

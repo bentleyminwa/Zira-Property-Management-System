@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { ListingType, PropertyStatus, PropertyType } from '@prisma/client';
 import { FieldErrors, UseFormSetValue } from 'react-hook-form';
 import { PropertyFormData } from '../../types/schemas';
 
@@ -35,7 +36,7 @@ export function PropertyClassification({
         <div className='col-span-3'>
           <Select
             defaultValue={defaultType || 'APARTMENT'}
-            onValueChange={(value) => setValue('type', value as any)}
+            onValueChange={(value) => setValue('type', value as PropertyType)}
           >
             <SelectTrigger className={errors.type ? 'border-destructive' : ''}>
               <SelectValue placeholder='Select type' />
@@ -59,7 +60,9 @@ export function PropertyClassification({
         <div className='col-span-3'>
           <Select
             defaultValue={defaultStatus || 'AVAILABLE'}
-            onValueChange={(value) => setValue('status', value as any)}
+            onValueChange={(value) =>
+              setValue('status', value as PropertyStatus)
+            }
           >
             <SelectTrigger
               className={errors.status ? 'border-destructive' : ''}
@@ -84,7 +87,9 @@ export function PropertyClassification({
         <div className='col-span-3'>
           <Select
             defaultValue={defaultListingType || 'RENT'}
-            onValueChange={(value) => setValue('listingType', value as any)}
+            onValueChange={(value) =>
+              setValue('listingType', value as ListingType)
+            }
           >
             <SelectTrigger
               className={errors.listingType ? 'border-destructive' : ''}

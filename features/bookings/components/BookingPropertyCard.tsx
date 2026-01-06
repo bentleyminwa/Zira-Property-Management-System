@@ -8,6 +8,7 @@ import {
   MapPin,
   Maximize,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface BookingPropertyCardProps {
@@ -28,9 +29,10 @@ export function BookingPropertyCard({ property }: BookingPropertyCardProps) {
           {/* Property Image */}
           <div className='relative aspect-video w-full overflow-hidden rounded-lg border bg-muted'>
             {property.image ? (
-              <img
+              <Image
                 src={property.image}
                 alt={property.name}
+                fill
                 className='object-cover'
               />
             ) : (

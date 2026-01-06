@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { BookingStatus } from '@prisma/client';
+import { BookingStatus, Prisma } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
 export type UpdateBookingStatusState = {
@@ -77,7 +77,7 @@ export async function updateBookingStatus(
     }
 
     // Prepare update data
-    const data: any = { status: newStatus };
+    const data: Prisma.BookingUpdateInput = { status: newStatus };
 
     if (newStatus === BookingStatus.ACTIVE) {
       data.moveInDate = additionalData?.moveInDate || new Date();

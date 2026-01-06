@@ -49,7 +49,7 @@ export default function TopBar() {
             </BreadcrumbLink>
           </BreadcrumbItem>
           {breadcrumbItems.length > 0 && <BreadcrumbSeparator />}
-          {breadcrumbItems.map((item, index) => (
+          {breadcrumbItems.map((item) => (
             <React.Fragment key={item.href}>
               <BreadcrumbItem>
                 {item.isLast ? (

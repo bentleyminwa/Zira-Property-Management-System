@@ -22,12 +22,13 @@ export function MaintenancePropertyCard({
       </CardHeader>
       <CardContent>
         <div className='flex gap-4'>
-          {(property as any).image ? (
+          {property.image ? (
             <div className='relative h-24 w-24 shrink-0 overflow-hidden rounded-md border'>
-              <img
-                src={(property as any).image}
+              <Image
+                src={property.image}
                 alt={property.name}
-                className='h-full w-full object-cover'
+                fill
+                className='object-cover'
               />
             </div>
           ) : (

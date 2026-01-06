@@ -83,7 +83,17 @@ export function MaintenanceInfo({ maintenance }: MaintenanceInfoProps) {
 
             <div className='flex items-center gap-2'>
               <span className='font-medium text-muted-foreground'>Status:</span>
-              <Badge variant={status.badge as any}>{status.label}</Badge>
+              <Badge
+                variant={
+                  status.badge as
+                    | 'default'
+                    | 'secondary'
+                    | 'destructive'
+                    | 'outline'
+                }
+              >
+                {status.label}
+              </Badge>
             </div>
           </div>
         </div>

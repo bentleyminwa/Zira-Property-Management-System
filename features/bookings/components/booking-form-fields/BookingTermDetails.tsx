@@ -96,8 +96,13 @@ export function BookingTermDetails({
             <PopoverContent className='w-auto p-0' align='start'>
               <Calendar
                 mode='range'
-                selected={dateRange}
-                onSelect={(value) => setValue('dateRange', value as any)}
+                selected={dateRange as any}
+                onSelect={(value) =>
+                  setValue(
+                    'dateRange',
+                    value || { from: undefined, to: undefined }
+                  )
+                }
                 disabled={(date) =>
                   date < new Date(new Date().setHours(0, 0, 0, 0))
                 }

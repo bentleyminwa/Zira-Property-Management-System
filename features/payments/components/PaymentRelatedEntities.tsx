@@ -7,7 +7,7 @@ import {
 } from '@/paths';
 import { Booking, Property, Tenant } from '@prisma/client';
 import { format } from 'date-fns';
-import { Building2, ExternalLink, LinkIcon, User } from 'lucide-react';
+import { Building2, ExternalLink, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -69,12 +69,13 @@ export function PaymentRelatedEntities({
         </CardHeader>
         <CardContent className='space-y-4'>
           <div className='flex gap-3'>
-            {(booking.property as any).image ? (
+            {booking.property.image ? (
               <div className='relative h-16 w-16 shrink-0 overflow-hidden rounded-md border'>
-                <img
-                  src={(booking.property as any).image}
+                <Image
+                  src={booking.property.image}
                   alt={booking.property.name}
-                  className='h-full w-full object-cover'
+                  fill
+                  className='object-cover'
                 />
               </div>
             ) : (

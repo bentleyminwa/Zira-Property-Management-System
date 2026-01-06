@@ -4,10 +4,15 @@ export const bookingSchema = z.object({
   propertyId: z.string().min(1, 'Property is required'),
   tenantId: z.string().min(1, 'Tenant is required'),
   type: z.enum(['SHORT_TERM', 'LONG_TERM']),
-  dateRange: z.object({
-    from: z.date(),
-    to: z.date(),
-  }),
+  dateRange: z
+    .object({
+      from: z.date().optional(),
+      to: z.date().optional(),
+    })
+    .refine((data) => data.from && data.to, {
+      message: 'Please select a valid date range',
+      path: ['from'],
+    }),
   totalPrice: z.number().min(0, 'Price must be positive'),
   depositAmount: z.number().min(0).optional(),
   notes: z.string().optional(),

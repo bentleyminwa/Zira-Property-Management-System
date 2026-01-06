@@ -12,7 +12,6 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
 ]);
 const isAdminRoute = createRouteMatcher(['/dashboard(.*)']);
-const isClientRoute = createRouteMatcher(['/client(.*)']);
 
 export default clerkMiddleware(async (auth, request) => {
   const { userId, sessionClaims } = await auth();
@@ -43,12 +42,14 @@ export default clerkMiddleware(async (auth, request) => {
   }
 
   // 4. RBAC Enforcement
-  const metadata = (sessionClaims?.metadata as any) || {};
-  const publicMetadata = (sessionClaims?.publicMetadata as any) || {};
+  const metadata = (sessionClaims?.metadata as Record<string, unknown>) || {};
+  const publicMetadata =
+    (sessionClaims?.publicMetadata as Record<string, unknown>) || {};
   let role =
-    metadata.role ||
-    publicMetadata.role ||
-    (sessionClaims?.unsafeMetadata as any)?.role;
+    (metadata.role as string) ||
+    (publicMetadata.role as string) ||
+    ((sessionClaims?.unsafeMetadata as Record<string, unknown>)
+      ?.role as string);
 
   // Fallback to Backend API if role is not in current JWT
   if (!role) {
@@ -59,7 +60,7 @@ export default clerkMiddleware(async (auth, request) => {
         (user.publicMetadata?.role as string) ||
         (user.unsafeMetadata?.role as string) ||
         'CLIENT';
-    } catch (e) {
+    } catch {
       role = 'CLIENT';
     }
   }

@@ -19,7 +19,10 @@ export function BookingQuickActions({ booking }: BookingQuickActionsProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAction = async (
-    action: (id: string, notes?: string) => Promise<any>,
+    action: (
+      id: string,
+      notes?: string
+    ) => Promise<{ success: boolean; message?: string }>,
     successMessage: string
   ) => {
     setIsLoading(true);
@@ -31,7 +34,7 @@ export function BookingQuickActions({ booking }: BookingQuickActionsProps) {
         } else {
           toast.error(result.message || 'Action failed');
         }
-      } catch (error) {
+      } catch {
         toast.error('An unexpected error occurred');
       } finally {
         setIsLoading(false);
