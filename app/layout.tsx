@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { ClerkProvider } from '@clerk/nextjs';
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 
 import { Quicksand } from 'next/font/google';
@@ -28,6 +29,7 @@ export default function RootLayout({
         >
           <ThemeProvider defaultTheme='light' storageKey='zira-theme'>
             {children}
+            <Analytics />
             <Toaster />
           </ThemeProvider>
         </body>
