@@ -28,12 +28,36 @@ export const Navbar = () => {
           </Link>
         </SignedOut>
         <SignedIn>
-          <Link href='/dashboard'>
-            <Button variant='ghost'>Dashboard</Button>
-          </Link>
+          <DashboardLink />
           <UserButton />
         </SignedIn>
       </div>
     </nav>
   );
 };
+
+('use client');
+
+import { useUser } from '@clerk/nextjs';
+
+function DashboardLink() {
+  const { user, isLoaded } = useUser();
+
+  if (!isLoaded) return null;
+
+  const role =
+    (user?.publicMetadata?.role as string) ||
+    (user?.unsafeMetadata?.role as string) ||
+    'CLIENT';
+
+  const href =
+    role === 'CLIENT'
+      ? process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:5173'
+      : '/dashboard';
+
+  return (
+    <Link href={href}>
+      <Button variant='ghost'>Dashboard</Button>
+    </Link>
+  );
+}
