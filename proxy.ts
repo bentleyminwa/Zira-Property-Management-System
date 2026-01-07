@@ -26,7 +26,7 @@ export default clerkMiddleware(async (auth, request) => {
       'CLIENT';
     const redirectUrl = ['ADMIN', 'MANAGER', 'STAFF'].includes(role)
       ? '/dashboard'
-      : 'http://localhost:5173';
+      : 'https://zira-homes-client.vercel.app/';
     return Response.redirect(new URL(redirectUrl, request.url));
   }
 
