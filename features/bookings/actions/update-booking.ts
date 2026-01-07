@@ -3,7 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { BookingStatus, BookingType } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
-import { checkAvailability } from '../lib/utils';
+import { checkAvailability } from '../utils/check-availability';
 
 export async function updateBooking(
   id: string,

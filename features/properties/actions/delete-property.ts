@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { propertiesPath } from '@/paths';
 import { revalidatePath } from 'next/cache';
 
 export async function deleteProperty(id: string) {
@@ -48,7 +49,7 @@ export async function deleteProperty(id: string) {
     });
 
     // Revalidate the properties list page
-    revalidatePath('/dashboard/properties');
+    revalidatePath(propertiesPath);
 
     return {
       success: true,

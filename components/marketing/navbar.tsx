@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
+import { DashboardLink } from './dashboardlink';
 
 export const Navbar = () => {
   return (
@@ -35,29 +36,3 @@ export const Navbar = () => {
     </nav>
   );
 };
-
-('use client');
-
-import { useUser } from '@clerk/nextjs';
-
-function DashboardLink() {
-  const { user, isLoaded } = useUser();
-
-  if (!isLoaded) return null;
-
-  const role =
-    (user?.publicMetadata?.role as string) ||
-    (user?.unsafeMetadata?.role as string) ||
-    'CLIENT';
-
-  const href =
-    role === 'CLIENT'
-      ? process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:5173'
-      : '/dashboard';
-
-  return (
-    <Link href={href}>
-      <Button variant='ghost'>Dashboard</Button>
-    </Link>
-  );
-}

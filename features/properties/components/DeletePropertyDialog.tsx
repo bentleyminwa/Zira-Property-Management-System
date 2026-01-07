@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/Modal';
+import { propertiesPath } from '@/paths';
 import { Booking, Maintenance, Property } from '@prisma/client';
 import { AlertTriangle, Loader2, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -35,7 +36,7 @@ export function DeletePropertyDialog({ property }: DeletePropertyDialogProps) {
       if (result.success) {
         toast.success(result.message);
         // Redirect to properties list
-        router.push('/properties');
+        router.push(propertiesPath);
         router.refresh();
       } else {
         const errorMessage = result.error || 'Failed to delete property.';
