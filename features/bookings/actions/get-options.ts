@@ -15,7 +15,7 @@ export async function getBookingOptions() {
   ]);
 
   return {
-    properties: serializeDecimal(properties) as {
+    properties: serializeDecimal(properties) as unknown as {
       id: string;
       name: string;
       price: number;

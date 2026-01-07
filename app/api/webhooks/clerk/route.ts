@@ -1,13 +1,21 @@
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 import { db } from '@/lib/db';
-import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
 import { Role } from '@prisma/client';
 import { headers } from 'next/headers';
 import { Webhook } from 'svix';
 
+// Type for Clerk webhook event (avoiding direct import to prevent build errors)
+type ClerkWebhookEvent = any;
+
 export async function POST(req: Request) {
+  // Bypass during build to prevent Clerk initialization errors
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return new Response('Build-time bypass', { status: 200 });
+  }
+
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
@@ -38,7 +46,7 @@ export async function POST(req: Request) {
   // Create a new Svix instance with your secret.
   const wh = new Webhook(WEBHOOK_SECRET);
 
-  let evt: WebhookEvent;
+  let evt: ClerkWebhookEvent;
 
   // Verify the payload with the headers
   try {
@@ -46,7 +54,7 @@ export async function POST(req: Request) {
       'svix-id': svix_id,
       'svix-timestamp': svix_timestamp,
       'svix-signature': svix_signature,
-    }) as WebhookEvent;
+    }) as ClerkWebhookEvent;
     console.log('Webhook Verified:', { eventType: evt.type });
   } catch (err) {
     console.error('Error verifying webhook:', err);
@@ -97,6 +105,7 @@ export async function POST(req: Request) {
       console.log('User created successfully in DB');
 
       // 2. Update Clerk publicMetadata for JWT access
+      const { clerkClient } = await import('@clerk/nextjs/server');
       const client = await clerkClient();
       await client.users.updateUserMetadata(id, {
         publicMetadata: {
