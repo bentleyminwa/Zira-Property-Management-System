@@ -26,7 +26,7 @@ export default clerkMiddleware(async (auth, request) => {
       'CLIENT';
     const redirectUrl = ['ADMIN', 'MANAGER', 'STAFF'].includes(role)
       ? '/dashboard'
-      : 'https://zira-homes-client.vercel.app/';
+      : 'http://localhost:5173';
     return Response.redirect(new URL(redirectUrl, request.url));
   }
 
@@ -66,9 +66,7 @@ export default clerkMiddleware(async (auth, request) => {
   }
 
   if (isAdminRoute(request) && !['ADMIN', 'MANAGER', 'STAFF'].includes(role)) {
-    return Response.redirect(
-      new URL('https://zira-homes-client.vercel.app/', request.url)
-    );
+    return Response.redirect(new URL('http://localhost:5173', request.url));
   }
 });
 

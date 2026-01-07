@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider afterSignOutUrl='https://zira-homes-pm.vercel.app/'>
+    <ClerkProvider afterSignOutUrl='/'>
       <html lang='en'>
         <body
           className={`${quicksand.className} antialiased bg-background text-foreground`}

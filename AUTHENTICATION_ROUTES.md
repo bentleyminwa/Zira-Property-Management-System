@@ -26,8 +26,8 @@ Updated both the admin app and client app to use production URLs for authenticat
 
 #### 4. **app/sign-in/[[...rest]]/page.tsx** - Sign-In Configuration
 
-- **Line 6**: Added `fallbackRedirectUrl='/dashboard'` to the `SignIn` component
-- **Effect**: Users are redirected to dashboard after sign-in, then the proxy middleware handles CLIENT role redirects
+- **Line 6**: Added `forceRedirectUrl='/'` to the `SignIn` component
+- **Effect**: Users are redirected to root path after sign-in, allowing the proxy middleware to handle role-based redirects
 
 ### Client App (`client-app`)
 
@@ -37,8 +37,8 @@ Updated both the admin app and client app to use production URLs for authenticat
 
 #### 2. **src/App.tsx** - Unauthenticated User Redirect
 
-- **Line 31**: Updated `RedirectToSignIn` to include `redirectUrl='https://zira-homes-pm.vercel.app/sign-in'`
-- **Effect**: Unauthenticated users accessing the client app are redirected to the centralized sign-in page
+- **Line 31**: Updated `RedirectToSignIn` to include `signInFallbackRedirectUrl='https://zira-homes-pm.vercel.app/'`
+- **Effect**: Unauthenticated users accessing the client app are redirected to sign-in, then to the admin app root where middleware handles routing
 
 ## Authentication Flow
 
@@ -52,11 +52,12 @@ Updated both the admin app and client app to use production URLs for authenticat
 
 ### Sign-In Flow
 
-1. User visits `https://zira-homes-pm.vercel.app/sign-in`
-2. After successful sign-in, user is redirected to `/dashboard`
-3. Proxy middleware checks user role:
+1. User visits `https://zira-homes-pm.vercel.app/sign-in` (or is redirected from client app)
+2. After successful sign-in, user is redirected to `/` (root path)
+3. Proxy middleware intercepts the request and checks user role:
    - **CLIENT**: Redirected to `https://zira-homes-client.vercel.app/`
-   - **ADMIN/MANAGER/STAFF**: Stays on `/dashboard`
+   - **ADMIN/MANAGER/STAFF**: Redirected to `/dashboard`
+4. This ensures each user type lands on the correct application
 
 ### Sign-Out Flow
 

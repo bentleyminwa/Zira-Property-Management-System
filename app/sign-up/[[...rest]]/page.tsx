@@ -81,11 +81,7 @@ export default function SignUpPage() {
         </Button>
         <SignUp
           signInUrl='/sign-in'
-          forceRedirectUrl={
-            role === 'CLIENT'
-              ? 'https://zira-homes-client.vercel.app/'
-              : 'https://zira-homes-pm.vercel.app/dashboard'
-          }
+          forceRedirectUrl={role === 'CLIENT' ? '/client' : '/dashboard'}
           unsafeMetadata={{ role }}
         />
       </div>
