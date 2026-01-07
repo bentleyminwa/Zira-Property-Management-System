@@ -66,7 +66,9 @@ export default clerkMiddleware(async (auth, request) => {
   }
 
   if (isAdminRoute(request) && !['ADMIN', 'MANAGER', 'STAFF'].includes(role)) {
-    return Response.redirect(new URL('http://localhost:5173', request.url));
+    return Response.redirect(
+      new URL('https://zira-homes-client.vercel.app/', request.url)
+    );
   }
 });
 
