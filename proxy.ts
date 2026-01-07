@@ -15,20 +15,8 @@ const isAdminRoute = createRouteMatcher(['/dashboard(.*)']);
 
 export default clerkMiddleware(async (auth, request) => {
   const { userId, sessionClaims } = await auth();
-
-  // 1. Redirect authenticated users away from landing page
-  if (userId && request.nextUrl.pathname === '/') {
-    const client = await clerkClient();
-    const user = await client.users.getUser(userId);
-    const role =
-      (user.publicMetadata?.role as string) ||
-      (user.unsafeMetadata?.role as string) ||
-      'CLIENT';
-    const redirectUrl = ['ADMIN', 'MANAGER', 'STAFF'].includes(role)
-      ? '/dashboard'
-      : 'http://localhost:5173';
-    return Response.redirect(new URL(redirectUrl, request.url));
-  }
+  const CLIENT_URL =
+    process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:5173';
 
   // 2. Allow public routes
   if (isPublicRoute(request)) {
@@ -66,7 +54,7 @@ export default clerkMiddleware(async (auth, request) => {
   }
 
   if (isAdminRoute(request) && !['ADMIN', 'MANAGER', 'STAFF'].includes(role)) {
-    return Response.redirect(new URL('http://localhost:5173', request.url));
+    return Response.redirect(new URL(CLIENT_URL, request.url));
   }
 });
 

@@ -81,7 +81,11 @@ export default function SignUpPage() {
         </Button>
         <SignUp
           signInUrl='/sign-in'
-          forceRedirectUrl={role === 'CLIENT' ? '/client' : '/dashboard'}
+          forceRedirectUrl={
+            role === 'CLIENT'
+              ? process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:5173'
+              : '/dashboard'
+          }
           unsafeMetadata={{ role }}
         />
       </div>
