@@ -3,8 +3,8 @@
 import { BreadcrumbProvider } from '@/contexts/BreadcrumbContext';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
-import Sidebar from './Sidebar';
-import TopBar from './TopBar';
+import Sidebar from './sidebar';
+import TopBar from './topbar';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
