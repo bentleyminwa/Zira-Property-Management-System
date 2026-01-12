@@ -72,13 +72,13 @@ export function DeletePropertyDialog({ property }: DeletePropertyDialogProps) {
       }
       description={
         <div className='space-y-3 pt-2'>
-          <p>
+          <div>
             Are you sure you want to delete{' '}
             <span className='font-semibold text-foreground'>
               {property.name}
             </span>
             ? This action cannot be undone.
-          </p>
+          </div>
           {(bookingsCount > 0 || maintenanceCount > 0) && (
             <div className='rounded-md border border-destructive/50 bg-destructive/10 p-3'>
               <p className='font-semibold text-destructive'>

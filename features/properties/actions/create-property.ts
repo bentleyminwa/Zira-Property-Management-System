@@ -32,7 +32,6 @@ export async function createProperty(formData: FormData) {
         bedrooms: validatedData.bedrooms,
         bathrooms: validatedData.bathrooms,
         image: validatedData.image || null,
-        bookingType: validatedData.bookingType,
       },
     });
 

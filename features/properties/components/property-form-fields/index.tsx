@@ -12,7 +12,6 @@ interface PropertyFormFieldsProps {
   setValue: UseFormSetValue<PropertyFormData>;
   defaultType?: string;
   defaultStatus?: string;
-  defaultBookingType?: string;
 }
 
 export function PropertyFormFields({
@@ -21,7 +20,6 @@ export function PropertyFormFields({
   setValue,
   defaultType,
   defaultStatus,
-  defaultBookingType,
 }: PropertyFormFieldsProps) {
   return (
     <div className='grid gap-4 py-4'>
@@ -32,7 +30,6 @@ export function PropertyFormFields({
         errors={errors}
         defaultType={defaultType}
         defaultStatus={defaultStatus}
-        defaultBookingType={defaultBookingType}
       />
 
       <PropertySpecs register={register} errors={errors} />

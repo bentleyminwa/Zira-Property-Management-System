@@ -103,9 +103,9 @@ model Property {
   bathrooms   Int?
   features    String[] // Array of strings for features like "Pool", "Gym"
   image       String?
-  bookingType BookingType    @default(SHORT_TERM)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   agentId String?
   agent   User?   @relation("AgentProperties", fields: [agentId], references: [id])

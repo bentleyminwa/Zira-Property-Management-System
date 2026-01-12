@@ -33,7 +33,6 @@ export async function updateProperty(id: string, formData: FormData) {
         bedrooms: validatedData.bedrooms,
         bathrooms: validatedData.bathrooms,
         image: validatedData.image || null,
-        bookingType: validatedData.bookingType,
       },
     });
 

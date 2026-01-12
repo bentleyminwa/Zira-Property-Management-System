@@ -41,7 +41,7 @@ export function EditPropertyModal({
       address: property.address,
       type: property.type,
       status: property.status,
-      bookingType: property.bookingType,
+
       price: Number(property.price),
       size: property.size ? Number(property.size) : undefined,
       bedrooms: property.bedrooms || undefined,
@@ -59,7 +59,7 @@ export function EditPropertyModal({
         address: property.address,
         type: property.type,
         status: property.status,
-        bookingType: property.bookingType,
+
         price: Number(property.price),
         size: property.size ? Number(property.size) : undefined,
         bedrooms: property.bedrooms || undefined,
@@ -130,7 +130,6 @@ export function EditPropertyModal({
           setValue={setValue}
           defaultType={property.type}
           defaultStatus={property.status}
-          defaultBookingType={property.bookingType}
         />
       </form>
     </Modal>

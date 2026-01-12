@@ -25,10 +25,6 @@ export const propertySchema = z.object({
     message: 'Invalid property status',
   }),
 
-  bookingType: z.enum(BookingType, {
-    message: 'Invalid booking type',
-  }),
-
   description: z
     .string()
     .max(1000, 'Description must be less than 1000 characters')
