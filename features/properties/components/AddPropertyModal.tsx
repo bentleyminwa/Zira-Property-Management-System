@@ -29,7 +29,7 @@ export function AddPropertyModal() {
     defaultValues: {
       type: 'APARTMENT',
       status: 'AVAILABLE',
-      listingType: 'RENT',
+      bookingType: 'SHORT_TERM',
     },
   });
 

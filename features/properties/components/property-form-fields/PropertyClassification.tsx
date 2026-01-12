@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ListingType, PropertyStatus, PropertyType } from '@prisma/client';
+import { BookingType, PropertyStatus, PropertyType } from '@prisma/client';
 import { FieldErrors, UseFormSetValue } from 'react-hook-form';
 import { PropertyFormData } from '../../types/schemas';
 
@@ -16,7 +16,7 @@ interface PropertyClassificationProps {
   errors: FieldErrors<PropertyFormData>;
   defaultType?: string;
   defaultStatus?: string;
-  defaultListingType?: string;
+  defaultBookingType?: string;
 }
 
 export function PropertyClassification({
@@ -24,7 +24,7 @@ export function PropertyClassification({
   errors,
   defaultType,
   defaultStatus,
-  defaultListingType,
+  defaultBookingType,
 }: PropertyClassificationProps) {
   return (
     <>
@@ -79,32 +79,31 @@ export function PropertyClassification({
         </div>
       </div>
 
-      {/* Listing Type Field */}
+      {/* Booking Type Field */}
       <div className='grid grid-cols-4 items-start gap-4'>
-        <Label htmlFor='listingType' className='text-right pt-2'>
-          Listing Type <span className='text-destructive'>*</span>
+        <Label htmlFor='bookingType' className='text-right pt-2'>
+          Booking Type <span className='text-destructive'>*</span>
         </Label>
         <div className='col-span-3'>
           <Select
-            defaultValue={defaultListingType || 'RENT'}
+            defaultValue={defaultBookingType || 'SHORT_TERM'}
             onValueChange={(value) =>
-              setValue('listingType', value as ListingType)
+              setValue('bookingType', value as BookingType)
             }
           >
             <SelectTrigger
-              className={errors.listingType ? 'border-destructive' : ''}
+              className={errors.bookingType ? 'border-destructive' : ''}
             >
-              <SelectValue placeholder='Select listing type' />
+              <SelectValue placeholder='Select booking type' />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='BUY'>For Sale</SelectItem>
-              <SelectItem value='RENT'>For Rent</SelectItem>
+              <SelectItem value='SHORT_TERM'>Short Term</SelectItem>
+              <SelectItem value='LONG_TERM'>Long Term</SelectItem>
             </SelectContent>
           </Select>
-          <FormError message={errors.listingType?.message} />
+          <FormError message={errors.bookingType?.message} />
           <p className='text-xs text-muted-foreground mt-1'>
-            For rent properties: booking type (short-term/long-term) is set when
-            creating bookings
+            Short-term: nightly/weekly stays. Long-term: monthly/yearly rentals.
           </p>
         </div>
       </div>

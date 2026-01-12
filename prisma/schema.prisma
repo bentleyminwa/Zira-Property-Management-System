@@ -15,11 +15,6 @@ enum Role {
   CLIENT
 }
 
-enum ListingType {
-  BUY
-  RENT
-}
-
 enum PropertyStatus {
   AVAILABLE
   RENTED
@@ -108,7 +103,7 @@ model Property {
   bathrooms   Int?
   features    String[] // Array of strings for features like "Pool", "Gym"
   image       String?
-  listingType ListingType    @default(RENT)
+  bookingType BookingType    @default(SHORT_TERM)
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
 
