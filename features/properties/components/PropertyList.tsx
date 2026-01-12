@@ -1,3 +1,4 @@
+import { Pagination } from '@/components/ui/Pagination';
 import { EmptyState } from '@/components/ui/empty-state';
 import { PropertyCard } from '@/features/properties/components/PropertyCard';
 import { prisma } from '@/lib/prisma';
@@ -9,6 +10,7 @@ interface PropertyListProps {
   status?: string;
   type?: string;
   sort?: string;
+  page?: number;
 }
 
 export async function PropertyList({
@@ -16,7 +18,10 @@ export async function PropertyList({
   status,
   type,
   sort,
+  page = 1,
 }: PropertyListProps) {
+  const PAGE_SIZE = 8;
+  const skip = (page - 1) * PAGE_SIZE;
   // Build where clause
   const where: Prisma.PropertyWhereInput = {
     AND: [
@@ -38,10 +43,17 @@ export async function PropertyList({
   if (sort === 'price_asc') orderBy = { price: 'asc' };
   if (sort === 'price_desc') orderBy = { price: 'desc' };
 
-  const properties = await prisma.property.findMany({
-    where,
-    orderBy,
-  });
+  const [properties, totalCount] = await Promise.all([
+    prisma.property.findMany({
+      where,
+      orderBy,
+      skip,
+      take: PAGE_SIZE,
+    }),
+    prisma.property.count({ where }),
+  ]);
+
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
   if (properties.length === 0) {
     return (
@@ -53,10 +65,21 @@ export async function PropertyList({
   }
 
   return (
-    <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-      {properties.map((property) => (
-        <PropertyCard key={property.id} property={serializeDecimal(property)} />
-      ))}
+    <div className='space-y-8'>
+      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+        {properties.map((property) => (
+          <PropertyCard
+            key={property.id}
+            property={serializeDecimal(property)}
+          />
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <div className='flex justify-center pt-4'>
+          <Pagination currentPage={page} totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 }

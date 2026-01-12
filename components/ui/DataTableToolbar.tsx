@@ -49,6 +49,7 @@ export function DataTableToolbar({
     } else {
       params.delete(searchKey);
     }
+    params.delete('page');
     router.replace(`?${params.toString()}`);
   }, 500);
 
@@ -59,6 +60,7 @@ export function DataTableToolbar({
     } else {
       params.delete(key);
     }
+    params.delete('page');
     router.replace(`?${params.toString()}`);
   };
 

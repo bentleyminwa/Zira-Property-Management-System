@@ -12,6 +12,7 @@ interface PropertiesProps {
     status?: string;
     type?: string;
     sort?: string;
+    page?: string;
   }>;
 }
 
@@ -21,6 +22,7 @@ export default async function Properties({ searchParams }: PropertiesProps) {
   const status = params.status;
   const type = params.type;
   const sort = params.sort;
+  const page = params.page ? parseInt(params.page) : 1;
 
   return (
     <div className='p-6 space-y-6'>
@@ -38,7 +40,13 @@ export default async function Properties({ searchParams }: PropertiesProps) {
       </DataTableToolbar>
 
       <Suspense fallback={<CardGridSkeleton />}>
-        <PropertyList query={query} status={status} type={type} sort={sort} />
+        <PropertyList
+          query={query}
+          status={status}
+          type={type}
+          sort={sort}
+          page={page}
+        />
       </Suspense>
     </div>
   );
