@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function LandingPage() {
@@ -29,8 +30,14 @@ export default function LandingPage() {
       </div>
 
       {/* Feature Grid or Image could go here */}
-      <div className='mt-16 w-full max-w-5xl aspect-video rounded-xl border border-border bg-card/50 shadow-2xl flex items-center justify-center text-muted-foreground'>
-        App Screenshot Placeholder
+      <div className='relative mt-16 w-full max-w-5xl aspect-video rounded-xl border border-border bg-card/50 shadow-2xl flex items-center justify-center text-muted-foreground'>
+        <Image
+          src={'/zirapms.png'}
+          alt=''
+          height={400}
+          width={800}
+          className='absolute object-cover'
+        />
       </div>
     </div>
   );
