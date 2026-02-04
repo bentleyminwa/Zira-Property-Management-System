@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function LandingPage() {
   return (
@@ -30,7 +31,7 @@ export default function LandingPage() {
 
       {/* Feature Grid or Image could go here */}
       <div className='mt-16 w-full max-w-5xl aspect-video rounded-xl border border-border bg-card/50 shadow-2xl flex items-center justify-center text-muted-foreground'>
-        App Screenshot Placeholder
+        <Image src="zirapms.png" alt="project placeholder" fit className="object-cover" />
       </div>
     </div>
   );
