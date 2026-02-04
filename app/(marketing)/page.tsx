@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { default as Image, default as Image } from 'next/image';
 import Link from 'next/link';
 
 export default function LandingPage() {
